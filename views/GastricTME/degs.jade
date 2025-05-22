@@ -1,0 +1,81 @@
+extends layout
+
+block content
+  #wrapper
+    // Sidebar
+    include sidebar.jade
+    // Content Wrapper
+    #content-wrapper.d-flex.flex-column
+      // Main Content
+      #content
+        // Topbar
+        include header.jade
+        // Begin Page Content
+        .container-fluid
+          // Page Heading
+          .d-sm-flex.align-items-center.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800 Differentially Expressed Gene (DEGs):
+          label(for='dataset-select') Choose a cell type:
+          select#dataset-select(name='datasetoption')
+            option(value='') --Please choose an option--
+            option(value='CD4') CD4+ T cells
+            option(value='CD8') CD8+ T cells
+            option(value='B') B cells
+            option(value='Myeloid') Myeloid cells
+            option(value='Stromal') Stromal cells
+          br
+          .row
+            .col-xl-8.col-lg-5
+              .card.shadow.mb-4
+                // Card Header - Dropdown
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold DEGs
+                // Card Body
+                .card-body(style="height: 600px;")
+                  table#tableDEGs
+                    thead
+                      td p_val
+                      td avg_logFC
+                      td pct1
+                      td pct2
+                      td p_val_adj
+                      td cluster
+                      td gene
+                    tbody#tableDEGsBody
+          br
+          form
+            label Cell Type Selected
+            input#dataset-selected-input(type="text", readonly ,style="margin-left:10px; margin-right:10px;background-color: #ccc;")
+            label Gene Selected
+            input#gene-selected-input(type="text", readonly,style="margin-left:10px; margin-right:10px;background-color: #ccc;")
+            input(type="submit", value="Submit")
+          .row
+            // Area Chart
+            .col-xl-6.col-lg-7
+              .card.shadow.mb-4
+                // Card Header - Dropdown
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold UMAP of gene expression
+                // Card Body
+                .card-body#imgFeaturePlot(style="height: 600px;")
+                  .lds-dual-ring.hidden.overlay#loader1
+            .col-xl-6.col-lg-7
+              .card.shadow.mb-4
+                // Card Header - Dropdown
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Distribution of gene expression
+                // Card Body
+                .card-body#imgViolin(style="height: 600px;")
+                  .lds-dual-ring.hidden.overlay#loader2
+
+        include footer.jade
+        a.scroll-to-top.rounded(onClick="document.documentElement.scrollIntoView({ behavior: 'smooth' });")
+          i.fas.fa-angle-up
+  script(src='/GastricTME/javascripts/degs_query.js')
+  script(src='/assets/vendor/jquery/jquery.min.js')
+  script(src='/assets/vendor/jquery-easing/jquery.easing.min.js')
+  script(src='/GastricTME/javascripts/sb-admin-2.min.js')
+  link(rel="stylesheet",type="text/css",href="/assets/libs/datatables.net-dt/css/jquery.dataTables.css")
+  script(type="text/javascript",charset="utf8",src="/assets/libs/datatables.net/js/jquery.dataTables.js ")
+
+  //- script(type="text/javascript") $(document).ready(function(){$("#tableDEGs").DataTable();})

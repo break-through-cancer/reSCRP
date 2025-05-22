@@ -1,0 +1,77 @@
+extends layout
+
+block content
+  #wrapper
+    // Sidebar
+    include sidebar.jade
+    #content-wrapper.d-flex.flex-column
+      #content
+        // Topbar
+        include header.jade
+        // Begin Page Content
+        .container-fluid
+          // Page Heading
+          p
+            h1.h3.mb-0.text-gray-800 BCR
+          form#selection
+            label(for='field-select') Tissue type:
+            select#field-select(name='fieldoptions')
+              option(value='ALL') --All--
+              option(value='tumor') Tumor
+              option(value='intermediate') Intermediate
+              option(value='distant') Distant
+              option(value='adjacent') Adjacent
+            label(for='gender-select', style="margin-left:10px;") Sex:
+            select#gender-select(name='gendertypeoption')
+              option(value='ALL') --All--
+              option(value='Female') Female
+              option(value='Male') Male
+            label(for='stage-select', style="margin-left:10px;") Pathological stage:
+            select#stage-select(name='stagetypeoption')
+              option(value='ALL') --All--
+              option(value='I') I
+              option(value='II') II
+              option(value='III') III
+            label(for='smoking-select', style="margin-left:10px;") Smoking status:
+            select#smoking-select(name='smokingtypeoption')
+              option(value='ALL') --All--
+              option(value='never smoker') Never smoker
+              option(value='smoker') Smoker
+            label(for='mut-select', style="margin-left:10px;") Mutant driver gene:
+            select#mut-select(name='mutoption')
+              option(value='ALL') --All--
+              option(value='KRAS') KRAS
+              option(value='EGFR') EGFR
+              option(value='Other') Other
+            input#submitbutton.SubmitButton(type="submit",name="SUBMITBUTTON",value="Submit",style="margin-left:10px;")
+          hr
+          .row
+            .col-xl-8.col-lg-7
+              .card.shadow.mb-4
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold BCR clone top 10
+                .card-body#imgBCR(style="min-height: 200px;padding: 0 !important;")
+                  .lds-dual-ring.hidden.overlay#loader1
+          .row
+            .col-xl-8.col-lg-7
+              .card.shadow.mb-4
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold BCR clone size
+                .card-body#imgBCRR(style="min-height: 200px;padding: 0 !important;")
+                  .lds-dual-ring.hidden.overlay#loader2
+          .row
+            .col-xl-8.col-lg-7
+              .card.shadow.mb-4
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold BCR clone's Jaccard index
+                .card-body#imgBCRJI(style="min-height: 200px;padding: 0 !important;")
+                  .lds-dual-ring.hidden.overlay#loader3
+
+        script(src='/BcellLC/javascripts/bcr_query.js')
+        include footer.jade
+        a.scroll-to-top.rounded(onClick="document.documentElement.scrollIntoView({ behavior: 'smooth' });")
+          i.fas.fa-angle-up
+  script(src='/assets/vendor/plotly.js-dist/plotly.js')
+  script(src='/assets/vendor/jquery/jquery.min.js')
+  script(src='/assets/vendor/jquery-easing/jquery.easing.min.js')
+  script(src='/BcellLC/javascripts/sb-admin-2.min.js')

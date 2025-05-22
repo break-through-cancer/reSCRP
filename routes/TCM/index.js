@@ -1,0 +1,156 @@
+var express = require("express");
+var router = express.Router();
+var pool = require("../../SQL/TCM/pool");
+
+/* GET home page. */
+
+router.get("/TCM", function (req, res, next) {
+  console.log("router TCM");
+  res.render("TCM/index.jade", { title: "Overview" });
+});
+
+router.get("/TCM/download/CD8", function (req, res, next) {
+    console.log("router TCM download CD8");
+    return res.download("public/DataDownload/CD8_Obj_for_mapping.rds", 'CD8.rds', (err) => {
+        if (err) {
+        // Handle error if the file cannot be downloaded
+            if(res.headersSent) {
+                console.log("header has been sent!");
+            }else{
+                res.status(500).send('Error downloading the file.');
+            }
+        }
+        });
+    }
+);
+
+router.get("/TCM/download/CD4", function (req, res, next) {
+    console.log("router TCM download CD4");
+    return res.download("public/DataDownload/CD4_Obj_for_mapping.rds", 'CD4.rds', (err) => {
+        if (err) {
+        // Handle error if the file cannot be downloaded
+            if(res.headersSent) {
+                console.log("header has been sent!");
+            }else{
+                res.status(500).send('Error downloading the file.');
+            }
+        }
+        });
+    }
+);
+
+router.get("/TCM/download/MD5", function (req, res, next) {
+    console.log("router TCM download MD5");
+    return res.download("public/DataDownload/md5sum.txt", 'md5sum.txt', (err) => {
+        if (err) {
+        // Handle error if the file cannot be downloaded
+            if(res.headersSent) {
+                console.log("header has been sent!");
+            }else{
+                res.status(500).send('Error downloading the file.');
+            }
+        }
+        });
+    }
+);
+
+router.get("/TCM/embedding", function (req, res, next) {
+  console.log("router.get embedding");
+  if (req.query.name === "dataset_id") {
+    switch (req.query.dataset_id.toLowerCase()) {
+      case "cd4":
+      case "cd8":
+      case "innate":
+      case "proliferative":
+        pool.queryTissueAndCancer(req, res, next);
+        break;
+
+      case "treg":
+      case "tfh":
+        pool.queryTissueAndCancer12(req, res, next);
+        break;
+    }
+  } else if (req.query.name === "tissuetype_id") {
+    switch (req.query.dataset_id.toLowerCase()) {
+      case "cd4":
+      case "cd8":
+      case "innate":
+      case "proliferative":
+        pool.queryCancer(req, res, next);
+        break;
+
+      case "treg":
+      case "tfh":
+        pool.queryCancer12(req, res, next);
+        break;
+    }
+  } else if (req.query.name === "submit") {
+    switch (req.query.dataset_id.toLowerCase()) {
+      case "cd4":
+      case "cd8":
+      case "innate":
+      case "proliferative":
+        console.log("querydist");
+        pool.queryDist(req, res, next);
+        break;
+
+      case "treg":
+      case "tfh":
+        pool.queryDist12(req, res, next);
+        break;
+    }
+  } else {
+    console.log(req.query.name);
+    res.render("TCM/embedding.jade", { title: "Embedding" });
+  }
+});
+
+router.get("/TCM/degs", function (req, res, next) {
+  console.log("router.get degs");
+  if (req.query.name === "dataset_id") {
+    pool.queryTable(req, res, next);
+  } else if (req.query.name === "submit") {
+    pool.queryDEGsIMG(req, res, next);
+  } else {
+    res.render("TCM/degs.jade", { title: "DEGs" });
+  }
+});
+
+router.get("/TCM/expression", function (req, res, next) {
+  console.log("router.get expression");
+  if (req.query.name === "dataset_id") {
+    switch (req.query.dataset_id.toLowerCase()) {
+      case "cd4":
+      case "cd8":
+      case "innate":
+      case "proliferative":
+        pool.queryTissueAndCancer(req, res, next);
+        break;
+
+      case "treg":
+      case "tfh":
+        pool.queryTissueAndCancer12(req, res, next);
+        break;
+    }
+  } else if (req.query.name === "tissuetype_id") {
+    switch (req.query.dataset_id.toLowerCase()) {
+      case "cd4":
+      case "cd8":
+      case "innate":
+      case "proliferative":
+        pool.queryCancer(req, res, next);
+        break;
+
+      case "treg":
+      case "tfh":
+        pool.queryCancer12(req, res, next);
+        break;
+    }
+  } else if (req.query.name === "submit") {
+    pool.queryMarkerDist(req, res, next);
+  } else {
+    res.render("TCM/expression.jade", { title: "Expression" });
+  }
+});
+
+module.exports = router;

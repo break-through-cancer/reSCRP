@@ -1,0 +1,27 @@
+{
+  "name": "SCRP",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "@ebi-gene-expression-group/anatomogram": "^2.4.0",
+    "cookie-parser": "~1.4.4",
+    "csv-writer": "^1.6.0",
+    "cvs-writer": "^0.0.1",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "helmet": "^5.1.0",
+    "hsts": "^2.2.0",
+    "http-errors": "~1.6.3",
+    "jade": "^0.29.0",
+    "morgan": "~1.9.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "node-esapi": "^0.0.1",
+    "nodemon": "^2.0.15",
+    "r-script": "^0.0.4",
+    "tmp": "^0.2.1"
+  }
+}

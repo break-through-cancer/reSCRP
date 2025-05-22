@@ -1,0 +1,53 @@
+// Sidebar
+nav.navbar.navbar-expand.navbar-light.bg-white.topbar.mb-4.static-top.shadow
+  // Sidebar Toggle (Topbar)
+  button#sidebarToggleTop.btn.btn-link.d-md-none.rounded-circle.mr-3
+    i.fa.fa-bars
+  div.pagelogotitle
+    div.pagelogo
+      a.mda-nav-logo(href="https://singlecell.mdanderson.org/",target="_self")
+        img(src="/assets/img/xmda-logo.png.pagespeed.ic.wI3LdrsTIB.png", alt="The University of Texas MD Anderson Cancer Center", height = "100%")
+    div.majortitle
+      h1.h3.mb-0.text-gray-800
+        | T Cell Map
+  ul.navbar-nav.ml-auto
+    li.nav-item.dropdown.no-arrow.mx-1
+      a#alertsDropdown.nav-link.dropdown-toggle(href='#',role='button',data-toggle='dropdown',aria-haspopup='true',aria-expanded='false')
+        i.fas.fa-bell.fa-fw
+        // Counter - Alerts
+        span.badge.badge-danger.badge-counter 1+
+      // Dropdown - Alerts
+      .dropdown-list.dropdown-menu.dropdown-menu-right.shadow.animated--grow-in(aria-labelledby='alertsDropdown')
+        h6.dropdown-header
+          | Notification
+        a.dropdown-item.d-flex.align-items-center(href='#')
+          .mr-3
+            .icon-circle.bg-primary
+              i.fas.fa-file-alt.text-white
+          div
+            .small.text-gray-500 June 26, 2023
+            span.font-weight-bold Data submition is done!
+        // Nav Item - Messages
+        li.nav-item.dropdown.no-arrow.mx-1
+          a#messagesDropdown.nav-link.dropdown-toggle(href='#',role='button',data-toggle='dropdown',aria-haspopup='true',aria-expanded='false')
+            i.fas.fa-envelope.fa-fw
+            // Counter - Messages
+            span.badge.badge-danger.badge-counter 2
+          // Dropdown - Messages
+          .dropdown-list.dropdown-menu.dropdown-menu-right.shadow.animated--grow-in(aria-labelledby='messagesDropdown')
+            h6.dropdown-header
+              | Contact
+            a.dropdown-item.d-flex.align-items-center(href='#')
+              .dropdown-list-image.mr-3
+                img.rounded-circle(src='img/undraw_profile_2.svg',alt='...')
+                .status-indicator.bg-success
+              .font-weight-bold
+                .text-truncate yanshuoc at gmail.com
+                .small.text-gray-500 Yanshuo Chu, MD anderson cancer center
+            a.dropdown-item.d-flex.align-items-center(href='#')
+              .dropdown-list-image.mr-3
+                img.rounded-circle(src='img/undraw_profile_1.svg',alt='...')
+                .status-indicator
+              div
+                .text-truncate linghua22 at mdanderson.org
+                .small.text-gray-500 Linghua Wang, MD anderson cancer center

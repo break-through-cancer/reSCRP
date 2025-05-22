@@ -1,0 +1,67 @@
+html body header#header.fixed-top div.container.d-flex.align-items-center.justify-content-between span h2 span{
+    font-weight: bolder;
+    color: black;
+}
+.py-4{
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    text-align: center;
+}
+html body main#main div.container.py-4 p a.mda-nav-logo {
+    color: black;
+    font-size: 1.7rem;
+}
+
+
+@media (min-width: 992px) {
+    html body header#header.fixed-top div.container.d-flex.align-items-center.justify-content-between div {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+    .majortitle {
+        position: absolute;
+        left: 50%;
+        margin-left: -150px;
+    }
+}
+@media (max-width: 992px) {
+    html body header#header.fixed-top div.container.d-flex.align-items-center.justify-content-between div {
+        align-items: center;
+        width: 100%;
+    }
+    .majortitle {
+        margin-top: 15px;
+    }
+    .counts{
+        padding: 240px 0 60px 0 !important;
+    }
+}
+
+html body main#main div.container.py-4 p a.mda-nav-logo img {
+    display: inline;
+    max-height: 86px;
+    height: auto;
+    width: auto;
+    max-width: 100%;
+    padding: 25px 30px;
+}
+.py-4{
+    background: black;
+    color: #63666A;
+}
+
+.icon-box.tcell{
+    background:#CB6015;
+}
+.icon-box.gastric{
+    background:#614B79;
+}
+.icon-box.gastricTME{
+    background:#789D4A;
+}
+.icon-box.bcell{
+    background:#407EC9;
+}

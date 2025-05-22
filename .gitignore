@@ -1,0 +1,20 @@
+# Node.js dependencies
+/node_modules/
+
+# SENSITIVE - DB
+/conf
+
+# SENSITIVE - CERTS
+/ssl
+/bin/www
+
+# Public Assets
+/public/**/vendor/
+/public/DataDownload/
+/public/assets/
+/Rplots.pdf
+
+# System files
+/**/.DS_Store
+/.DS_Store
+/public/.DS_Store

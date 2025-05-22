@@ -1,0 +1,145 @@
+extends layout
+
+block content
+  header#header.fixed-top
+    .container.d-flex.align-items-center.justify-content-between
+      //- a.logo(href='/')
+      //-   img.img-fluid(src='assets/img/logo.png', alt='')
+      div
+        div
+          a.mda-nav-logo(href="https://singlecell.mdanderson.org/",target="_self")
+            img(src="/assets/img/xmda-logo.png.pagespeed.ic.wI3LdrsTIB.png", alt="The University of Texas MD Anderson Cancer Center", height = "100%")
+
+        div.majortitle
+          span
+            h2 <span>S</span>ingle <span>C</span>ell <span>R</span>esearch <span>P</span>ortal
+
+      nav#navbar.navbar
+        ul
+          //- li
+          //-   a.nav-link.scrollto.active(href='#hero') Home
+          //- li
+          //-   a.nav-link.scrollto(href='#counts') Statics
+          //- li
+          //-   a.nav-link.scrollto(href='#studies') Studies
+          //- li
+          //-   a.nav-link.scrollto(href='#team') Team
+          //- li.dropdown
+          //-   a(href='#')
+          //-     span Drop Down
+          //-     i.bi.bi-chevron-down
+          //-   ul
+          //-     li
+          //-       a(href='#') Drop Down 1
+          //-     li.dropdown
+          //-       a(href='#')
+          //-         span Deep Drop Down
+          //-         i.bi.bi-chevron-right
+          //-       ul
+          //-         li
+          //-           a(href='#') Deep Drop Down 1
+          //-         li
+          //-           a(href='#') Deep Drop Down 2
+          //-         li
+          //-           a(href='#') Deep Drop Down 3
+          //-         li
+          //-           a(href='#') Deep Drop Down 4
+          //-         li
+          //-           a(href='#') Deep Drop Down 5
+          //-     li
+          //-       a(href='#') Drop Down 2
+          //-     li
+          //-       a(href='#') Drop Down 3
+          //-     li
+          //-       a(href='#') Drop Down 4
+          li
+            a.nav-link.scrollto(href='https://faculty.mdanderson.org/profiles/linghua_wang.html') Contact
+        i.bi.bi-list.mobile-nav-toggle
+
+  // End Header
+  main#main
+    // ======= Counts Section =======
+    section#counts.counts
+      .container
+        .row.counters.position-relative
+          .col-lg-2.col-6.text-center
+            span.purecounter(data-purecounter-start='0', data-purecounter-end='656742', data-purecounter-duration='1')
+            p Cells
+          .col-lg-2.col-6.text-center
+            span.purecounter(data-purecounter-start='0', data-purecounter-end='670', data-purecounter-duration='1')
+            p Patients
+          .col-lg-2.col-6.text-center
+            span.purecounter(data-purecounter-start='0', data-purecounter-end='401', data-purecounter-duration='1')
+            p Samples
+          .col-lg-2.col-6.text-center
+            span.purecounter(data-purecounter-start='0', data-purecounter-end='21', data-purecounter-duration='1')
+            p Organs
+          .col-lg-2.col-6.text-center
+            span.purecounter(data-purecounter-start='0', data-purecounter-end='16', data-purecounter-duration='1')
+            p Cancers
+          .col-lg-2.col-6.text-center
+            span.purecounter(data-purecounter-start='0', data-purecounter-end='5', data-purecounter-duration='1')
+            p Studies
+    // End Counts Section
+    // ======= Services Section =======
+    section#studies.services.section-bg
+      .container
+        .section-title
+          h2 Studies
+          p
+            | Web portal for each study
+        .row
+          .col-lg-4.col-md-6
+            .icon-box.tcell
+              .icon
+                i.bi.bi-cash-stack(style='color: white;')
+              h4.title
+                a(href='/TCM') >T cell map
+              p.description
+                | &nbsp;&nbsp;
+          .col-lg-4.col-md-6
+            .icon-box.gastric
+              .icon
+                i.bi.bi-calendar4-week(style='color: white;')
+              h4.title
+                a(href='/GastricCancer') >Gastric cancer
+              p.description
+                | &nbsp;&nbsp;
+          .col-lg-4.col-md-6(data-wow-delay='0.1s')
+            .icon-box.gastricTME
+              .icon
+                i.bi.bi-chat-text(style='color: white;')
+              h4.title
+                a(href='/GastricTME') >Gastric TME
+              p.description
+                | &nbsp;&nbsp;
+
+          .col-lg-4.col-md-6(data-wow-delay='0.1s')
+            .icon-box.bcell
+              .icon
+                i.bi.bi-folder2(style='color: white;')
+              h4.title
+                a(href='/BcellLC') >B Cell Landscape in Lung Cancer
+              p.description
+                | &nbsp;&nbsp;
+    // End Services Section
+    .container.py-4
+      p
+        a.mda-nav-logo(href="https://www.mdanderson.org/",target="_self")
+          img(src="/assets/img/xmobilelogo.resize.png.pagespeed.ic.j92o1m7p2y.png", alt="The University of Texas MD Anderson Cancer Center", height = "100%")
+      p.copyright
+        | &copy; Copyright 
+        strong
+          span Linghua Wang's Lab @ MD Anderson Cancer Center
+        | . All Rights Reserved
+  // End Footer
+  a.back-to-top.d-flex.align-items-center.justify-content-center(href='#')
+    i.bi.bi-arrow-up-short
+  // Vendor JS Files
+  script(src='assets/vendor/bootstrap/js/bootstrap.bundle.min.js')
+  script(src='assets/vendor/purecounter/purecounter.js')
+  script(src='assets/vendor/glightbox/js/glightbox.min.js')
+  script(src='assets/vendor/isotope-layout/isotope.pkgd.min.js')
+  script(src='assets/vendor/swiper/swiper-bundle.min.js')
+  script(src='assets/vendor/php-email-form/validate.js')
+  script(src='assets/js/main.js')
