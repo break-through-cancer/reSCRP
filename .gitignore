@@ -11,7 +11,7 @@
 /ssl
 
 # Public Assets
-/public/DataDownload/
+/public/DataDownload/*.rds
 /Rplots.pdf
 
 # System files
