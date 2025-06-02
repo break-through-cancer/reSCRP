@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var createError = require("http-errors");
 var express = require("express");
 const helmet = require("helmet");
@@ -28,11 +30,32 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// READ IN FROM CMD AND LOAD MODULE
+const _modules = {
+  'tcm': TCMRouter,
+  'gastric_cancer': GastricCancerRouter,
+  'gastric_tme': GastricTMERouter,
+  'bcell_lc': BcellLCRouter,
+};
+
+// Register main index router
 app.use("/", indexRouter);
-app.use("/", TCMRouter);
-app.use("/", GastricCancerRouter);
-app.use("/", GastricTMERouter);
-app.use("/", BcellLCRouter);
+
+// Register declared modules
+process.env.MODULES.split(',').forEach((arg) => {
+  if (arg in _modules) {
+    console.log('Registering module: ' + arg);
+    app.use("/", _modules[arg]);
+  } else {
+    console.log('Module not found: ' + arg);
+  }
+});
+
+// TO REMOVE
+// app.use("/", TCMRouter);
+// app.use("/", GastricCancerRouter);
+// app.use("/", GastricTMERouter);
+// app.use("/", BcellLCRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
