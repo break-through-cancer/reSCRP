@@ -1,0 +1,165 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('main:server');
+const http = require('http');
+const https = require('https');
+var fs = require('fs');
+var path = require('path');
+const { constants } = require('crypto')
+
+/**
+ * Set options
+ */
+
+// Use an npm flag to toggle the listening on 443 and options
+// Then use dotenv to read the path to this files
+// console.log(process.env)
+
+const flags = [];
+
+process.argv.forEach((arg) => {
+  if(/^-/.test(arg)) {
+    flags.push(arg.replaceAll("-", ""));
+  }
+});
+
+const SSL_ENABLED = flags.includes("withssl");
+
+
+
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+var server = http.createServer(app);
+server.listen(port);
+server.on('error', onError);
+// server.on('listening', onListening);
+var ports = [];
+ports.push(port);
+
+if (SSL_ENABLED) {
+  var options = {
+      key: fs.readFileSync(process.env.SSL_KEY),
+      cert: fs.readFileSync(process.env.SSL_CERT),
+      ca: fs.readFileSync(process.env.SSL_CA),
+      passphrase: process.env.SSL_PASSPHRASE,
+      requestCert: true,
+      rejectUnauthorized: false,
+      secureOptions: constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_TLSv1 | constants.SSL_OP_NO_TLSv1_1,
+      ciphers: [
+          "ECDHE-RSA-AES256-SHA384",
+          "DHE-RSA-AES256-SHA384",
+          "ECDHE-RSA-AES256-SHA256",
+          "DHE-RSA-AES256-SHA256",
+          "ECDHE-RSA-AES128-SHA256",
+          "DHE-RSA-AES128-SHA256",
+          "HIGH",
+          "!aNULL",
+          "!eNULL",
+          "!EXPORT",
+          "!DES",
+          "!RC4",
+          "!MD5",
+          "!PSK",
+          "!SRP",
+          "!CAMELLIA",
+    "!ECDHE-RSA-DES-CBC3-SHA",
+    "!DES-CBC3-SHA",
+    "!RC4-SHA"
+      ].join(':'),
+      honorCipherOrder: true
+  };
+  var https_server = https.createServer(options, app);
+  https_server.listen(443);
+  ports.push(443);
+}
+
+console.log('Listening on ports: ' + ports)
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+// function onListeningArg(my_server) {
+//   var addr = my_server.address();
+//   var bind = typeof addr === 'string'
+//     ? 'pipe ' + addr
+//     : 'port ' + addr.port;
+//   console.log('Listening on ' + bind);
+// 
+// }
+// 
+// function onListening() {
+//   // console.log(server.address())
+//   var addr = server.address();
+//   var bind = typeof addr === 'string'
+//     ? 'pipe ' + addr
+//     : 'port ' + addr.port;
+//   debug('Listening on ' + bind);
+// 
+//   if(process.env.NODE_ENV === 'development'){
+//     console.log('Server started in development mode');
+//   } else if (process.env.NODE_ENV === 'production') {
+//     console.log('Server started in production mode')
+//   } else {
+//     console.log('Server started in an unknown mode')
+//   }
+// }

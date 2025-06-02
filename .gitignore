@@ -9,12 +9,9 @@
 
 # SENSITIVE - CERTS
 /ssl
-/bin/www
 
 # Public Assets
-/public/**/vendor/
 /public/DataDownload/
-/public/assets/
 /Rplots.pdf
 
 # System files
