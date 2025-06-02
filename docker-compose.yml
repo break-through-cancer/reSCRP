@@ -1,0 +1,32 @@
+services:
+  scrp:
+    build: .
+    ports:
+      - 3000:3000
+    #  - "443:443"
+    volumes:
+      - ./public/DataDownload:/public/DataDownload
+      # - ./.env:/.env
+    environment:
+      SSL_KEY: ${SSL_KEY}
+      SSL_CA: ${SSL_CERT}
+      SSL_CERT: ${SSL_CA}
+      SSL_PASSPHRASE: ${SSL_PASSPHRASE}
+      MODULES: ${MODULES}
+    depends_on:
+      - db
+  db:
+    image: mariadb:latest
+    container_name: some-mariadb
+    restart: unless-stopped
+    ports:
+      - 3307:3306
+    environment:
+      MARIADB_DATABASE: test
+      MARIADB_ROOT_PASSWORD: example
+
+volumes:
+  mariadb_data:
+    driver: local
+  mariadb_logs:
+    driver: local
