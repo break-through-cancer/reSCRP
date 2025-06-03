@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "start-with-ssl": "node ./bin/www --with-ssl"
+    "start-with-ssl": "node ./bin/www --with-ssl",
+    "start-with-hot-reload": "nodemon -e '*' ./bin/www"
   },
   "dependencies": {
     "@ebi-gene-expression-group/anatomogram": "^2.4.0",
@@ -22,8 +23,10 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "node-esapi": "^0.0.1",
-    "nodemon": "^2.0.15",
     "r-script": "^0.0.4",
     "tmp": "^0.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
