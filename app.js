@@ -51,12 +51,6 @@ process.env.MODULES.split(',').forEach((arg) => {
   }
 });
 
-// TO REMOVE
-// app.use("/", TCMRouter);
-// app.use("/", GastricCancerRouter);
-// app.use("/", GastricTMERouter);
-// app.use("/", BcellLCRouter);
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
