@@ -5,7 +5,7 @@
 .env
 
 # SENSITIVE - DB
-/conf
+# /conf
 
 # SENSITIVE - CERTS
 /ssl
