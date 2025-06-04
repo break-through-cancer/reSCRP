@@ -89,39 +89,16 @@ block content
           p
             | Web portal for each study
         .row
-          .col-lg-4.col-md-6
-            .icon-box.tcell
-              .icon
-                i.bi.bi-cash-stack(style='color: white;')
-              h4.title
-                a(href='/TCM') >T cell map
-              p.description
-                | &nbsp;&nbsp;
-          .col-lg-4.col-md-6
-            .icon-box.gastric
-              .icon
-                i.bi.bi-calendar4-week(style='color: white;')
-              h4.title
-                a(href='/GastricCancer') >Gastric cancer
-              p.description
-                | &nbsp;&nbsp;
-          .col-lg-4.col-md-6(data-wow-delay='0.1s')
-            .icon-box.gastricTME
-              .icon
-                i.bi.bi-chat-text(style='color: white;')
-              h4.title
-                a(href='/GastricTME') >Gastric TME
-              p.description
-                | &nbsp;&nbsp;
-
-          .col-lg-4.col-md-6(data-wow-delay='0.1s')
-            .icon-box.bcell
-              .icon
-                i.bi.bi-folder2(style='color: white;')
-              h4.title
-                a(href='/BcellLC') >B Cell Landscape in Lung Cancer
-              p.description
-                | &nbsp;&nbsp;
+           - each item in links
+               .col-lg-4.col-md-6
+                 div(class="icon-box #{item.css_class}")
+                   .icon
+                     i(class="bi #{item.icon}")
+                   h4.title
+                     a(href=item.link) #{item.title}
+                   p.description
+                       | !{item.description}
+            
     // End Services Section
     .container.py-4
       p
