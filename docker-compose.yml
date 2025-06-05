@@ -45,9 +45,3 @@ services:
     environment:
       MARIADB_DATABASE: tcm
       MARIADB_ROOT_PASSWORD: test
-
-# volumes:
-#   mariadb_data:
-#     driver: local
-#   mariadb_logs:
-#     driver: local
