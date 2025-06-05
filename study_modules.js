@@ -11,7 +11,7 @@ const study_modules = [
       cancers: 1,
     },
     link: {
-      css_class:'tcell',
+      css_class:'orange',
       icon: 'bi-cash-stack',
       title: '> T cell map',
       link: '/TCM',
@@ -29,7 +29,7 @@ const study_modules = [
       cancers: 0,
     },
     link: {
-      css_class:'gastric',
+      css_class:'purple',
       icon: 'bi-calendar4-week',
       title: '>Gastric cancer',
       link: '/GastricCancer',
@@ -47,7 +47,7 @@ const study_modules = [
       cancers: 0,
     },
     link: {
-      css_class:'gastricTME',
+      css_class:'green',
       icon: 'bi-chat-text',
       title: '>Gastric TME',
       link: '/GastricTME',
@@ -65,7 +65,7 @@ const study_modules = [
       cancers: 0,
     },
     link: {
-      css_class:'bcell',
+      css_class:'blue',
       icon: 'bi-folder2',
       title: '>B Cell Landscape in Lung Cancer',
       link: '/BcellLC',
@@ -83,7 +83,7 @@ const study_modules = [
       cancers: 1,
     },
     link: {
-      css_class:'tcell',
+      css_class:'green',
       icon: 'bi-cash-stack',
       title: '> CUSTOM: T cell map',
       link: '/TCM2',
