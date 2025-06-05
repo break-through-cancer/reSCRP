@@ -1,8 +1,5 @@
 # .dockerignore
 
-# Ignore original conf directory
-/conf
-
 # RDS Data files
 public/DataDownload
 
