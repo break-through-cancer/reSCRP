@@ -1,32 +1,45 @@
 services:
   scrp:
     build: .
+    develop:
+      watch:
+        - action: rebuild
+          path: .
     ports:
       - 3000:3000
     #  - "443:443"
     volumes:
-      - ./public/DataDownload:/public/DataDownload
-      # - ./.env:/.env
+      - ./public/DataDownload:/scrp/public/DataDownload
+#       - .env:/scrp/.env
     environment:
+      MODULES: ${MODULES}
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_CONN_LIMIT: ${DB_CONN_LIMIT}
+      DB_HOST_TCM: ${DB_HOST_TCM}
+      DB_USER_TCM: ${DB_USER_TCM}
+      DB_PASSWORD_TCM: ${DB_PASSWORD_TCM}
+      DB_DATABASE_TCM: ${DB_DATABASE_TCM}
       SSL_KEY: ${SSL_KEY}
       SSL_CA: ${SSL_CERT}
       SSL_CERT: ${SSL_CA}
       SSL_PASSPHRASE: ${SSL_PASSPHRASE}
-      MODULES: ${MODULES}
-    depends_on:
-      - db
   db:
     image: mariadb:latest
-    container_name: some-mariadb
+    container_name: scrp-mariadb
     restart: unless-stopped
     ports:
       - 3307:3306
+    volumes:
+      - ./seed.sql:/docker-entrypoint-initdb.d/seed.sql
     environment:
-      MARIADB_DATABASE: test
-      MARIADB_ROOT_PASSWORD: example
+      MARIADB_DATABASE: tcm
+      MARIADB_ROOT_PASSWORD: test
 
-volumes:
-  mariadb_data:
-    driver: local
-  mariadb_logs:
-    driver: local
+# volumes:
+#   mariadb_data:
+#     driver: local
+#   mariadb_logs:
+#     driver: local
