@@ -3,7 +3,7 @@ install:
 build:
 	docker build -t re-scrp .
 docker-compose-up:
-	docker compose --env-file .env up
+	docker compose --env-file .env up --build
 docker-compose-up-watch:
 	docker compose --env-file .env up --watch
 connect:
