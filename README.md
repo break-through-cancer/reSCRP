@@ -9,3 +9,24 @@
     b. Add support for dotenv
 3. Add basic testing suite
     a. Jest
+
+
+Clone this repo
+```sh
+make install or npm install
+```
+
+Setup .env.example file, rename to .env
+```sh
+cp .env.example ./.env
+```
+
+```sh
+make docker-compose-up or docker compose --env-file .env up --build
+press w to watch for changes
+```
+
+Connect to the database via mariadb CLI client
+```sh
+make connect
+```
