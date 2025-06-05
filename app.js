@@ -31,7 +31,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // READ IN FROM CMD AND LOAD MODULE
-const _modules = {
+const enabled_modules = process.env.MODULES.split(',');
+const _routers = {
   'tcm': TCMRouter,
   'gastric_cancer': GastricCancerRouter,
   'gastric_tme': GastricTMERouter,
@@ -41,13 +42,13 @@ const _modules = {
 // Register main index router
 app.use("/", indexRouter);
 
-// Register declared modules
-process.env.MODULES.split(',').forEach((arg) => {
-  if (arg in _modules) {
-    console.log('Registering module: ' + arg);
-    app.use("/", _modules[arg]);
+// Register routers for enabled modules
+enabled_modules.forEach(module => {
+  if (module in _routers) {
+    console.log('Registering module: ' + module);
+    app.use("/", _routers[module]);
   } else {
-    console.log('Module not found: ' + arg);
+    console.log('Module Router Not Found: ' + module);
   }
 });
 

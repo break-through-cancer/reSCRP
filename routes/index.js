@@ -1,8 +1,7 @@
 var express = require("express");
 var router = express.Router();
-const counts = require("../module_counts");
-const module_links = require("../module_links");
-const modules = process.env.MODULES.split(',');
+const study_modules = require("../study_modules");
+const enabled_modules = process.env.MODULES.split(',');
 
 // Move to utils
 function sumObjectsByKey(objs) {
@@ -15,20 +14,6 @@ function sumObjectsByKey(objs) {
   }, {});
 };
 
-// Only sum the counts for modules which are declared in .env
-let objs = [];
-modules.forEach((arg) => {
-  if (arg in counts) {
-    objs.push(counts[arg]);
-  };
-});
-
-let total_count = sumObjectsByKey(objs);
-total_count["studies"] = objs.length;
-
-// Only show links to modules which are declared in .env
-const filtered_links = module_links.filter(item => modules.includes(item.module));
-
 /* GET home page. */
 router.get("/", function (req, res, next) {
   // const original_counts = {
@@ -39,8 +24,17 @@ router.get("/", function (req, res, next) {
   //   cancers: 16,
   //   studies: 5
   // };
-  res.render("index", { title: "SCRP", counts: total_count, links: filtered_links
-  });
+  const counts = study_modules
+    .filter(k => enabled_modules.includes(k.module))
+    .map(k => k.counts);
+
+  let total_count = sumObjectsByKey(counts);
+  total_count["studies"] = counts.length;
+
+  const links = study_modules
+    .filter(k => enabled_modules.includes(k.module))
+    .map(k => k.link);
+  res.render("index", { title: "SCRP", counts: total_count, links: links});
 });
 
 module.exports = router;
