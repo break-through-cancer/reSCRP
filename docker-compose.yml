@@ -1,10 +1,17 @@
 services:
   scrp:
     build: .
+    command: npm run start-with-hot-reload
     develop:
       watch:
-        - action: rebuild
+        - action: sync
           path: .
+          target: /scrp
+          ignore:
+            - node_modules/
+            - data/
+        - action: rebuild
+          path: package.json
     ports:
       - 3000:3000
     #  - "443:443"
@@ -33,6 +40,7 @@ services:
     ports:
       - 3307:3306
     volumes:
+      - ./data:/var/lib/mysql:Z
       - ./seed.sql:/docker-entrypoint-initdb.d/seed.sql
     environment:
       MARIADB_DATABASE: tcm
