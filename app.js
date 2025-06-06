@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var createError = require("http-errors");
 var express = require("express");
 const helmet = require("helmet");
@@ -28,11 +30,27 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// READ IN FROM CMD AND LOAD MODULE
+const enabled_modules = process.env.MODULES.split(',');
+const _routers = {
+  'tcm': TCMRouter,
+  'gastric_cancer': GastricCancerRouter,
+  'gastric_tme': GastricTMERouter,
+  'bcell_lc': BcellLCRouter,
+};
+
+// Register main index router
 app.use("/", indexRouter);
-app.use("/", TCMRouter);
-app.use("/", GastricCancerRouter);
-app.use("/", GastricTMERouter);
-app.use("/", BcellLCRouter);
+
+// Register routers for enabled modules
+enabled_modules.forEach(module => {
+  if (module in _routers) {
+    console.log('Registering module: ' + module);
+    app.use("/", _routers[module]);
+  } else {
+    console.log('Module Router Not Found: ' + module);
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

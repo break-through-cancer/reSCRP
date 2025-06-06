@@ -1,0 +1,47 @@
+services:
+  scrp:
+    build: .
+    command: npm run start-with-hot-reload
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /scrp
+          ignore:
+            - node_modules/
+            - data/
+        - action: rebuild
+          path: package.json
+    ports:
+      - 3000:3000
+    #  - "443:443"
+    volumes:
+      - ./public/DataDownload:/scrp/public/DataDownload
+#       - .env:/scrp/.env
+    environment:
+      MODULES: ${MODULES}
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_CONN_LIMIT: ${DB_CONN_LIMIT}
+      DB_HOST_TCM: ${DB_HOST_TCM}
+      DB_USER_TCM: ${DB_USER_TCM}
+      DB_PASSWORD_TCM: ${DB_PASSWORD_TCM}
+      DB_DATABASE_TCM: ${DB_DATABASE_TCM}
+      SSL_KEY: ${SSL_KEY}
+      SSL_CA: ${SSL_CERT}
+      SSL_CERT: ${SSL_CA}
+      SSL_PASSPHRASE: ${SSL_PASSPHRASE}
+  db:
+    image: mariadb:latest
+    container_name: scrp-mariadb
+    restart: unless-stopped
+    ports:
+      - 3307:3306
+    volumes:
+      - ./data:/var/lib/mysql:Z
+      - ./seed.sql:/docker-entrypoint-initdb.d/seed.sql
+    environment:
+      MARIADB_DATABASE: tcm
+      MARIADB_ROOT_PASSWORD: test

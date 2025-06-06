@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "start-with-ssl": "node ./bin/www --with-ssl",
+    "start-with-hot-reload": "nodemon -e '*' ./bin/www"
   },
   "dependencies": {
     "@ebi-gene-expression-group/anatomogram": "^2.4.0",
@@ -11,6 +13,7 @@
     "csv-writer": "^1.6.0",
     "cvs-writer": "^0.0.1",
     "debug": "~2.6.9",
+    "dotenv": "^16.5.0",
     "express": "~4.16.1",
     "helmet": "^5.1.0",
     "hsts": "^2.2.0",
@@ -20,8 +23,10 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "node-esapi": "^0.0.1",
-    "nodemon": "^2.0.15",
     "r-script": "^0.0.4",
     "tmp": "^0.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }

@@ -2,6 +2,27 @@ var express = require("express");
 var router = express.Router();
 var pool = require("../../SQL/TCM/pool");
 
+/*
+ * This module requires the pool db connection
+ *
+ * This module implements an:
+ * 1 index route
+ * 3 download routes
+ * 1 embedding route
+ * 1 deg route
+ * 1 expression route
+ *
+ * For the download routes, it requires the rds file in the public directory
+*/
+
+// router.get("/TCM", function (req, res, next) {
+// router.get("/TCM/download/CD8", function (req, res, next) {
+// router.get("/TCM/download/CD4", function (req, res, next) {
+// router.get("/TCM/download/MD5", function (req, res, next) {
+// router.get("/TCM/embedding", function (req, res, next) {
+// router.get("/TCM/degs", function (req, res, next) {
+//router.get("/TCM/expression", function (req, res, next) {
+
 /* GET home page. */
 
 router.get("/TCM", function (req, res, next) {

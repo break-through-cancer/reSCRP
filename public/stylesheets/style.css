@@ -52,16 +52,18 @@ html body main#main div.container.py-4 p a.mda-nav-logo img {
     background: black;
     color: #63666A;
 }
-
-.icon-box.tcell{
+/*
+ * Colors for homepage links
+ * */
+.icon-box.orange{
     background:#CB6015;
 }
-.icon-box.gastric{
+.icon-box.purple{
     background:#614B79;
 }
-.icon-box.gastricTME{
+.icon-box.green{
     background:#789D4A;
 }
-.icon-box.bcell{
+.icon-box.blue{
     background:#407EC9;
 }
