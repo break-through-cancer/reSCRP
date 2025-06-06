@@ -35,6 +35,7 @@ services:
       SSL_PASSPHRASE: ${SSL_PASSPHRASE}
   db:
     image: mariadb:latest
+    container_name: scrp-mariadb
     restart: unless-stopped
     ports:
       - 3307:3306
