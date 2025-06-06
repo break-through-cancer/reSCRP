@@ -16,27 +16,19 @@ const { constants } = require('crypto')
  * Set options
  */
 
-// Use an npm flag to toggle the listening on 443 and options
-// Then use dotenv to read the path to this files
-// console.log(process.env)
-
+// Parse any flags, move to utils
 const flags = [];
-
 process.argv.forEach((arg) => {
   if(/^-/.test(arg)) {
     flags.push(arg.replaceAll("-", ""));
   }
 });
 
-const SSL_ENABLED = flags.includes("withssl");
-
-
-
+const SSL_ENABLED = process.env.SSL_ENABLED === "true";
 
 /**
  * Get port from environment and store in Express.
  */
-
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
@@ -45,6 +37,7 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 // server.on('listening', onListening);
+
 var ports = [];
 ports.push(port);
 
