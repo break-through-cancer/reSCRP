@@ -5,3 +5,6 @@ public/DataDownload
 
 # Ignore Env file during build
 .env
+
+# Ignore SSL dir during build
+ssl/
