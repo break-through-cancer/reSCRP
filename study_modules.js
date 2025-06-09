@@ -73,7 +73,7 @@ const study_modules = [
     }
   },
   {
-    module: 'tcm2',
+    module: 'tcm_custom',
     description: '',
     counts: {
       cells: 5555,
