@@ -1,5 +1,8 @@
 # .dockerignore
 
+# Ignore raw data
+data/
+
 # RDS Data files
 public/DataDownload
 
