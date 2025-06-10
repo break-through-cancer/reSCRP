@@ -60,7 +60,7 @@ router.get("/TCM_Custom/download/CD4", function (req, res, next) {
     }
 );
 
-router.get("/TCM/download/MD5", function (req, res, next) {
+router.get("/TCM_Custom/download/MD5", function (req, res, next) {
     console.log("router TCM download MD5");
     return res.download("public/DataDownload/md5sum.txt", 'md5sum.txt', (err) => {
         if (err) {
@@ -122,7 +122,7 @@ router.get("/TCM_Custom/embedding", function (req, res, next) {
     }
   } else {
     console.log(req.query.name);
-    res.render("TCM/embedding.jade", { title: "Embedding" });
+    res.render("TCM_Custom/embedding.jade", { title: "Embedding" });
   }
 });
 
