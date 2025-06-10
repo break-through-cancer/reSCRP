@@ -10,6 +10,7 @@ var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
 var TCMRouter = require("./routes/TCM/index");
+var TCMCustomRouter = require("./routes/TCM_Custom/index");
 var GastricCancerRouter = require("./routes/GastricCancer/index");
 var GastricTMERouter = require("./routes/GastricTME/index");
 var BcellLCRouter = require("./routes/BcellLC/index");
@@ -34,6 +35,7 @@ app.use(express.static(path.join(__dirname, "public")));
 const enabled_modules = process.env.MODULES.split(',');
 const _routers = {
   'tcm': TCMRouter,
+  'tcm_custom': TCMCustomRouter,
   'gastric_cancer': GastricCancerRouter,
   'gastric_tme': GastricTMERouter,
   'bcell_lc': BcellLCRouter,

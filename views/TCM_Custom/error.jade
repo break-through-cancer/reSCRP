@@ -1,0 +1,88 @@
+extends layout
+
+block content
+  #wrapper
+    ul#accordionSidebar.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion
+      a.sidebar-brand.d-flex.align-items-center.justify-content-center(href='/')
+        .sidebar-brand-icon.rotate-n-15
+          i.fas.fa-laugh-wink
+        .sidebar-brand-text.mx-3
+          | SCRP
+      hr.sidebar-divider.my-0
+      li.nav-item
+        a.nav-link(href='/TCM')
+          i.fas.fa-fw.fa-tachometer-alt
+          span Overview
+      hr.sidebar-divider
+      .sidebar-heading
+        | Interface
+      li.nav-item
+        a.nav-link(href='embedding')
+          i.fas.fa-fw.fa-tachometer-alt
+          span Embedding
+      li.nav-item
+        a.nav-link.collapsed(href='#',data-toggle='collapse',data-target='#collapseUtilities',aria-expanded='true',aria-controls='collapseUtilities')
+          i.fas.fa-fw.fa-wrench
+          span Markers
+        #collapseUtilities.collapse(aria-labelledby='headingUtilities',data-parent='#accordionSidebar')
+          .bg-white.py-2.collapse-inner.rounded
+            a.collapse-item(href='degs') DEGs
+            a.collapse-item(href='expression') Expression
+      hr.sidebar-divider
+      .text-center.d-none.d-md-inline
+        button#sidebarToggle.rounded-circle.border-0
+    #content-wrapper.d-flex.flex-column
+      #content
+        nav.navbar.navbar-expand.navbar-light.bg-white.topbar.mb-4.static-top.shadow
+          button#sidebarToggleTop.btn.btn-link.d-md-none.rounded-circle.mr-3
+            i.fa.fa-bars
+          div
+            h1.h3.mb-0.text-gray-800
+              | Pan-T cell scRNAseq data visualization and analysis
+          ul.navbar-nav.ml-auto
+            li.nav-item.dropdown.no-arrow.mx-1
+              a#alertsDropdown.nav-link.dropdown-toggle(href='#',role='button',data-toggle='dropdown',aria-haspopup='true',aria-expanded='false')
+                i.fas.fa-bell.fa-fw
+                span.badge.badge-danger.badge-counter 1+
+              .dropdown-list.dropdown-menu.dropdown-menu-right.shadow.animated--grow-in(aria-labelledby='alertsDropdown')
+                h6.dropdown-header
+                  | Notification
+                a.dropdown-item.d-flex.align-items-center(href='#')
+                  .mr-3
+                    .icon-circle.bg-primary
+                      i.fas.fa-file-alt.text-white
+                  div
+                    .small.text-gray-500 November 21, 2021
+                    span.font-weight-bold Data submition is on going!
+                li.nav-item.dropdown.no-arrow.mx-1
+                  a#messagesDropdown.nav-link.dropdown-toggle(href='#',role='button',data-toggle='dropdown',aria-haspopup='true',aria-expanded='false')
+                    i.fas.fa-envelope.fa-fw
+                    span.badge.badge-danger.badge-counter 2
+                  .dropdown-list.dropdown-menu.dropdown-menu-right.shadow.animated--grow-in(aria-labelledby='messagesDropdown')
+                    h6.dropdown-header
+                      | Contact
+                    a.dropdown-item.d-flex.align-items-center(href='#')
+                      .dropdown-list-image.mr-3
+                        img.rounded-circle(src='img/undraw_profile_2.svg',alt='...')
+                        .status-indicator.bg-success
+                      .font-weight-bold
+                        .text-truncate yanshuoc at gmail.com
+                        .small.text-gray-500 Yanshuo Chu, MD anderson cancer center
+                    a.dropdown-item.d-flex.align-items-center(href='#')
+                      .dropdown-list-image.mr-3
+                        img.rounded-circle(src='img/undraw_profile_1.svg',alt='...')
+                        .status-indicator
+                      div
+                        .text-truncate linghua22 at mdanderson.org
+                        .small.text-gray-500 Linghua Wang, MD anderson cancer center
+        // Begin Page Content
+        .container-fluid
+          h1 error.message
+          h2 error.status
+          pre #{error.stack}
+        footer.sticky-footer.bg-white
+          .container.my-auto
+            .copyright.text-center.my-auto
+              span Copyright © MD Anderson Cancer Center 2021
+        a.scroll-to-top.rounded(onClick="document.documentElement.scrollIntoView({ behavior: 'smooth' });")
+          i.fas.fa-angle-up
