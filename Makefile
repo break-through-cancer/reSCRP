@@ -2,6 +2,8 @@ install:
 	npm install
 build:
 	docker build -t re-scrp .
+build-and-push:
+	docker buildx build --push --platform linux/amd64,linux/arm64 -t edit01/rescrp  .
 docker-compose-up:
 	docker compose --env-file .env up --build
 docker-compose-up-watch:
