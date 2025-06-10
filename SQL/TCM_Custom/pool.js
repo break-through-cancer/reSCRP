@@ -1,11 +1,5 @@
-//--------------------------------------------------------------//
-// filename : pool.js
-// Date : 2021-11-30
-// contributor : Yanshuo Chu
-// function: pool
-//--------------------------------------------------------------//
 var mysql = require("mysql2");
-var $conf = require("../../conf/TCM/conf");
+var $conf = require("../../conf/TCM_Custom/conf");
 var $sql = require("./sqlMapping");
 var R = require("r-script");
 var pool = mysql.createPool($conf.mysql);
@@ -248,7 +242,7 @@ module.exports = {
           csvWriter.writeRecords(json_result).then(() => {
             console.log(path + "write successfully!");
 
-            R("utils/TCM/rscripts/embedding.R")
+            R("utils/TCM_Custom/rscripts/embedding.R")
               .data({ csvPathFile: path })
               .call(function (errR, dR) {
                 // cleanupCallback();
@@ -343,7 +337,7 @@ module.exports = {
           csvWriter.writeRecords(json_result).then(() => {
             console.log(path + "write successfully!");
 
-            R("utils/TCM/rscripts/embedding.R")
+            R("utils/TCM_Custom/rscripts/embedding.R")
               .data({ csvPathFile: path })
               .call(function (errR, dR) {
                 // cleanupCallback();
@@ -578,7 +572,7 @@ module.exports = {
           csvWriter.writeRecords(json_result).then(() => {
             // console.log(path + "write successfully!");
 
-            R("utils/TCM/rscripts/degs.R")
+            R("utils/TCM_Custom/rscripts/degs.R")
               .data({ csvPathFile: path })
               .call(function (errR, dR) {
                 cleanupCallback();
@@ -756,7 +750,7 @@ module.exports = {
                 csvWriter.writeRecords(json_result).then(() => {
                   console.log(path + "write successfully!");
 
-                  R("utils/TCM/rscripts/expression.R")
+                  R("utils/TCM_Custom/rscripts/expression.R")
                     .data({ csvPathFile: path })
                     .call(function (errR, dR) {
                       cleanupCallback();
