@@ -7,10 +7,11 @@
 
 module.exports = {
     mysql: {
-        host: process.env.DB_HOST_TCM,
-        user: process.env.DB_USER_TCM,
-        password: process.env.DB_PASSWORD_TCM,
-        database: process.env.DB_DATABASE_TCM,
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: 'tcm',
+        port: process.env.DB_PORT,
         connectionLimit: process.env.DB_CONN_LIMIT
     },
 };
