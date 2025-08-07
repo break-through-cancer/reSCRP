@@ -13,7 +13,7 @@ services:
         - action: rebuild
           path: package.json
     ports:
-      - 3000:3000
+      - ${APP_PORT}:3000
     #  - "443:443"
     volumes:
       - ./public/DataDownload:/scrp/public/DataDownload
