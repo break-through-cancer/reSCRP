@@ -10,6 +10,7 @@ var $sql = require("./sqlMapping");
 var R = require("r-script");
 var pool = mysql.createPool($conf.mysql);
 
+
 const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const tmp = require("tmp");
 
@@ -55,6 +56,7 @@ module.exports = {
     // console.log("query tissue and cancer type");
     pool.getConnection(function (err, connection) {
       if (err) {
+        console.log(err);
         connection.release();
         // console.log("connection failed!");
         callback(null, err);
