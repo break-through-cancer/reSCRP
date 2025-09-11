@@ -1,7 +1,17 @@
 services:
   scrp:
-    image: ghcr.io/break-through-cancer/rescrp:latest
+    build: .
     command: npm run start-with-hot-reload
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /scrp
+          ignore:
+            - node_modules/
+            - data/
+        - action: rebuild
+          path: package.json
     ports:
       - ${APP_PORT}:3000
     volumes:
