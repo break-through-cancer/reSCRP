@@ -4,11 +4,11 @@ const study_modules = [
     module: 'tcm',
     description: '',
     counts: {
-      cells: 3000,
-      patients: 30,
-      samples: 10,
-      organs: 5,
-      cancers: 1,
+      cells: 308048,
+      patients: 324,
+      samples: 486,
+      organs: 21,
+      cancers: 16,
     },
     link: {
       css_class:'orange',
