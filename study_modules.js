@@ -73,7 +73,7 @@ const study_modules = [
     }
   },
   {
-    module: 'tcm2',
+    module: 'tcm_custom',
     description: '',
     counts: {
       cells: 5555,
@@ -86,7 +86,7 @@ const study_modules = [
       css_class:'green',
       icon: 'bi-cash-stack',
       title: '> CUSTOM: T cell map',
-      link: '/TCM2',
+      link: '/TCM_Custom',
       description: '&nbsp;&nbsp;'
     }
   },

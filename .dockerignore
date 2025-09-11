@@ -1,7 +1,13 @@
 # .dockerignore
 
+# Ignore raw data
+data/
+
 # RDS Data files
 public/DataDownload
 
 # Ignore Env file during build
 .env
+
+# Ignore SSL dir during build
+ssl/

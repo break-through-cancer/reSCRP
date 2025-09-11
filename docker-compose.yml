@@ -13,7 +13,7 @@ services:
         - action: rebuild
           path: package.json
     ports:
-      - 3000:3000
+      - ${APP_PORT}:3000
     #  - "443:443"
     volumes:
       - ./public/DataDownload:/scrp/public/DataDownload
@@ -21,11 +21,13 @@ services:
     environment:
       MODULES: ${MODULES}
       DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DATABASE: ${DB_DATABASE}
       DB_CONN_LIMIT: ${DB_CONN_LIMIT}
       DB_HOST_TCM: ${DB_HOST_TCM}
+      DB_PORT_TCM: ${DB_PORT_TCM}
       DB_USER_TCM: ${DB_USER_TCM}
       DB_PASSWORD_TCM: ${DB_PASSWORD_TCM}
       DB_DATABASE_TCM: ${DB_DATABASE_TCM}
@@ -40,7 +42,9 @@ services:
     ports:
       - 3307:3306
     volumes:
-      - ./data:/var/lib/mysql:Z
+      - ./data/TCM_custom_export:/data/TCM_custom_export
+      - ./load_data.sql:/load_data.sql
+      - ./data/db:/var/lib/mysql:Z
       - ./seed.sql:/docker-entrypoint-initdb.d/seed.sql
     environment:
       MARIADB_DATABASE: tcm

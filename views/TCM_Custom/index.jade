@@ -1,0 +1,187 @@
+extends layout
+
+block content
+  #wrapper
+    // Sidebar
+    include sidebar.jade
+    // Content Wrapper
+    #content-wrapper.d-flex.flex-column
+      // Main Content
+      #content
+        // Topbar
+        include header.jade
+        // Begin Page Content
+        .container-fluid
+          // Page Heading
+          div Citation: 
+            a(href="https://www.nature.com/articles/s41591-023-02371-y") Chu, Y. Dai, E. Li, Y. Han, G. Pei, G. Ingram, D. R. Thakkar, K. Qin, J. J. Dang, M. Le, X. Hu, C. Deng, Q. Sinjab, A. Gupta, P. Wang, R. Hao, D. Peng, F. Yan, X. Liu, Y. Song, S. Zhang, S. Heymach, J. V. Reuben, A. Elamin, Y. Y. Pizzi, M. P. Lu, Y. Lazcano, R. Hu, J. Li, M. Curran, M. Futreal, A. Maitra, A. Jazaeri, A. A. Ajani, J. A. Swanton, C. Cheng, X. D. Abbas, H. A. Gillison, M. Bhat, K. Lazar, A. J. Green, M. Litchfield, K. Kadara, H. Yee, C. Wang, L. (2023). Pan-cancer T cell atlas links a cellular stress response state to immunotherapy resistance. Nature Medicine, 1-13.
+          p
+          h1.h3.mb-0.text-gray-800 Overview
+          // Content Row
+          .row
+            .col-xl-2.col-md-6.mb-4
+              .card.background-one.foreground-one.shadow.h-100.py-2
+                .card-body.noar
+                  .row.no-gutters.align-items-center
+                    .col.mr-2
+                      .text-xs.font-weight-bold.text-uppercase.mb-1
+                        | T Cells:
+                      .h5.mb-0.font-weight-bold 308,048
+                    .col-auto
+                      span.icon-stack
+                        i.fas.fa-solid.fa-circle.icon-stack-1x.fa-2x.text-gray-300
+                        i.fas.fa-solid.fa-circle.icon-stack-2x.fa-1x.text-gray-500
+            .col-xl-2.col-md-6.mb-4
+              .card.background-two.foreground-one.shadow.h-100.py-2
+                .card-body.noar
+                  .row.no-gutters.align-items-center
+                    .col.mr-2
+                      .text-xs.font-weight-bold.text-uppercase.mb-1
+                        | Samples:
+                      .h5.mb-0.font-weight-bold 486
+                    .col-auto
+                      i.fas.fa-vial.fa-2x.text-gray-300
+            .col-xl-2.col-md-6.mb-4
+              .card.background-three.foreground-one.shadow.h-100.py-2
+                .card-body.noar
+                  .row.no-gutters.align-items-center
+                    .col.mr-2
+                      .text-xs.font-weight-bold.text-uppercase.mb-1
+                        | Subjects:
+                      .h5.mb-0.font-weight-bold 324
+                    .col-auto
+                      i.fas.fa-hospital-user.fa-2x.text-gray-300
+            .col-xl-2.col-md-6.mb-4
+              .card.background-four.foreground-one.shadow.h-100.py-2
+                .card-body.noar
+                  .row.no-gutters.align-items-center
+                    .col.mr-2
+                      .text-xs.font-weight-bold.text-uppercase.mb-1
+                        | Organs:
+                      .h5.mb-0.font-weight-bold 21
+                    .col-auto
+                      i.fas.fa-lungs.fa-2x.text-gray-300
+            .col-xl-2.col-md-6.mb-4
+              .card.background-five.foreground-one.shadow.h-100.py-2
+                .card-body.noar
+                  .row.no-gutters.align-items-center
+                    .col.mr-2
+                      .text-xs.font-weight-bold.text-uppercase.mb-1
+                        | Cancer types:
+                      .h5.mb-0.font-weight-bold  16
+                    .col-auto
+                      i.fas.fa-disease.fa-2x.text-gray-300
+          // Content Row
+          .row
+            // Area Chart
+            .col-xl-4.col-lg-7
+              .card.shadow.mb-4
+                // Card Header - Dropdown
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Cell number
+                // Card Body
+                .card-body
+                  .chart-pie
+                    canvas#CellNumberBar
+            .col-xl-4.col-lg-7
+              .card.shadow.mb-4
+                // Card Header - Dropdown
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Sample/Subject number
+                // Card Body
+                .card-body
+                  .chart-pie
+                    canvas#SamplePatientBar
+            // Pie Chart
+            .col-xl-4.col-lg-5
+              .card.shadow.mb-4
+                // Card Header - Dropdown
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Cell type proportion
+                // Card Body
+                .card-body
+                  .chart-pie.pt-4.pb-2
+                    canvas#CellTypePieChart
+          // Content Row
+          .row
+            // Area Chart
+            .col-xl-4.col-lg-7
+              .card.shadow.mb-4
+                // Card Header - Dropdown
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Tissue fraction
+                // Card Body
+                .card-body
+                  .chart-pie
+                    canvas#TissueFracBar
+            .col-xl-4.col-lg-7
+              .card.shadow.mb-4
+                // Card Header - Dropdown
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Healthy donor tissues
+                // Card Body
+                .card-body
+                  .chart-pie
+                    canvas#HTissueFracBar
+            .col-xl-4.col-lg-7
+              .card.shadow.mb-4
+                // Card Header - Dropdown
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Uninvolved normal tissues
+                // Card Body
+                .card-body
+                  .chart-pie
+                    canvas#UTissueFracBar
+          .row
+            .col-xl-4.col-lg-7
+              .card.shadow.mb-4
+                // Card Header - Dropdown
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Primary tumor tissues
+                // Card Body
+                .card-body
+                  .chart-pie
+                    canvas#PTissueFracBar
+            .col-xl-4.col-lg-7
+              .card.shadow.mb-4
+                // Card Header - Dropdown
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Metastatic tumor tissues
+                // Card Body
+                .card-body
+                  .chart-pie
+                    canvas#MTissueFracBar
+            .col-xl-4.col-lg-7
+              .card.shadow.mb-4
+                .card-header.py-3
+                  h6.m-0.font-weight-bold Data and software
+                .card-body
+                    // In this study, we obtained single cell RNA sequencing (scRNA-seq) data from 16 published and 10 in-house datasets across 16 different cancer types from 21 organs, together with T cells collected from non-neoplastic tumor adjacent tissues and peripheral blood from cancer patients, as well as normal bone marrow and lymph node tissues and peripheral blood samples collected from healthy donors, representing the largest single-cell dataset on T cells to date, totaling 308,048 high-quality transcriptomes after rigorous data filtering. We performed a comprehensive interrogation of the transcriptional states of TILs across a vast range of different cancer types, characterized their cellular abundance, compositions, phenotypic relationships and co-localization patterns and established the TIL atlas in human cancers at unprecedented resolution. Our analysis demonstrates a rich diversity of T cell states and subpopulations in health and disease (e.g. the highly heterogeneous Treg and Tfh populations) that is not typically captured in individual studies. We examined the evolutionary dynamics of TILs along the cancer continuum across tissue groups and identified T cell subsets association with disease progression. We also correlated with tumor histopathological, genotypic, and molecular subtypes, and other available clinical variables (e.g. smoking) across 26 single-cell studies. In addition, by applying our defined TIL gene signatures to large-scale datasets including TCGA, we examined the relationship between the differential expression of unique TIL gene signatures and tumor mutation burden (TMB) as well as patient survival. Moreover, we also assessed their association with TMB, PD-L1 expression, and response to immune checkpoint therapies (ICT) in the context of large-scale clinical trials (n = 562 patients from 7 cancer cohorts).
+                    P Processed data: 
+                        a(href='/TCM/download/CD8', download='CD8.rds') CD8 T cells   
+                        a(href='/TCM/download/CD4', download='CD4.rds') CD4 T cells   
+                        a(href='/TCM/download/MD5', download='MD5.rds') MD5Sum
+
+                    P MultiMap R package: 
+                        a(href='https://github.com/WangLab-ComputationalBiology/MultiMap') MultiMap
+
+        // /.container-fluid
+        // End of Main Content
+        // Footer
+        include footer.jade
+        a.scroll-to-top.rounded(onClick="document.documentElement.scrollIntoView({ behavior: 'smooth' });")
+          i.fas.fa-angle-up
+
+  script(src='/assets/vendor/bootstrap2/js/bootstrap.bundle.min.js')
+  script(src='/assets/vendor/jquery-easing/jquery.easing.min.js')
+  script(src='/assets/vendor/chart.js/Chart.min.js')
+  script(src='/assets/vendor/chartjs-plugin-piechart-outlabels/dist/chartjs-plugin-piechart-outlabels.min.js')
+  script(src='/TCM/javascripts/sb-admin-2.min.js')
+  script(src='/TCM/javascripts/chart/chart-mtissuefrac-bar.js')
+  script(src='/TCM/javascripts/chart/chart-ptissuefrac-bar.js')
+  script(src='/TCM/javascripts/chart/chart-utissuefrac-bar.js')
+  script(src='/TCM/javascripts/chart/chart-htissuefrac-bar.js')
+  script(src='/TCM/javascripts/chart/chart-tissuefrac-bar.js')
+  script(src='/TCM/javascripts/chart/chart-cell-bar.js')
+  script(src='/TCM/javascripts/chart/chart-sample-bar.js')
+  script(src='/TCM/javascripts/chart/chart-celltype-pie.js')

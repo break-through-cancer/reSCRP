@@ -1,0 +1,67 @@
+extends layout
+
+block content
+  #wrapper
+    // Sidebar
+    include sidebar.jade
+    #content-wrapper.d-flex.flex-column
+      #content
+        // Topbar
+        include header.jade
+        // Begin Page Content
+        .container-fluid
+          // Page Heading
+          //- .d-sm-flex.align-items-center.justify-content-between.mb-4
+          p
+            h1.h3.mb-0.text-gray-800 Expression
+
+          form#selection
+            label(for='dataset-select') Choose a cell type or state:
+            select#dataset-select(name='datasetoption')
+              option(value='') --Please choose an option--
+              option(value='CD4') CD4+ T cells
+              option(value='CD8') CD8+ T cells
+              option(value='Innate') Unconventional T cells
+              option(value='Proliferative') Proliferative T cells
+              option(value='Treg') Treg cells
+              option(value='TFH') TFH cells
+            label(for='tissuetype-select',style="margin-left:10px;") Choose a tissue type:
+            select#tissuetype-select(name='tissuetypeoption')
+            label(for='cancertype-select',style="margin-left:10px;") Choose a cancer type or organ site:
+            select#cancertype-select(name='cancertypeoption')
+            br
+            label Markers input
+            textarea#markers-input(rows="1", cols="10",style="margin-left:10px")
+            input#submitbutton.SubmitButton(type="submit",name="SUBMITBUTTON",value="Submit",style="margin-left:10px")
+
+
+          hr
+          // Content Row
+          .row
+            // Area Chart
+            .col-xl-6.col-lg-7
+              .card.shadow.mb-4
+                // Card Header - Dropdown
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Expression distribution
+                // Card Body
+                .card-body#imgBubblePlot(style="min-height: 200px;")
+                  .lds-dual-ring.hidden.overlay#loader1
+            .col-xl-6.col-lg-7
+              .card.shadow.mb-4
+                // Card Header - Dropdown
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Spearman correlation of markers' expression
+                // Card Body
+                .card-body#imgHeatmapPlot(style="min-height: 200px;")
+                  .lds-dual-ring.hidden.overlay#loader2
+
+
+          script(src='/TCM/javascripts/expression_query.js')
+        include footer.jade
+        a.scroll-to-top.rounded(onClick="document.documentElement.scrollIntoView({ behavior: 'smooth' });")
+          i.fas.fa-angle-up
+
+  script(src='/assets/vendor/jquery/jquery.min.js')
+  script(src='/assets/vendor/jquery-easing/jquery.easing.min.js')
+  script(src='/TCM/javascripts/sb-admin-2.min.js')

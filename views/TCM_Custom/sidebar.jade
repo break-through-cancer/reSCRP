@@ -1,0 +1,37 @@
+ul#accordionSidebar.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion
+  // Sidebar - Brand
+  a.sidebar-brand.d-flex.align-items-center.justify-content-center(href='/')
+    //- .sidebar-brand-icon.rotate-n-15
+    //-   i.fas.fa-laugh-wink
+    .sidebar-brand-text.mx-3
+      | SCRP
+  // Divider
+  hr.sidebar-divider.my-0
+  // Nav Item - Dashboard
+  li.nav-item
+    a.nav-link(href='/TCM_Custom')
+      i.fas.fa-fw.fa-tachometer-alt
+      span Overview
+  // Divider
+  hr.sidebar-divider
+  // Heading
+  .sidebar-heading
+    | Interface
+  // Nav Item - Pages Collapse Menu
+  li.nav-item
+    a.nav-link(href='embedding')
+      i.fas.fa-fw.fa-tachometer-alt
+      span Embedding
+  li.nav-item
+    a.nav-link.collapsed(href='#',data-toggle='collapse',data-target='#collapseUtilities',aria-expanded='true',aria-controls='collapseUtilities')
+      i.fas.fa-fw.fa-wrench
+      span Markers
+    #collapseUtilities.collapse(aria-labelledby='headingUtilities',data-parent='#accordionSidebar')
+      .bg-white.py-2.collapse-inner.rounded
+        a.collapse-item(href='degs') DEGs
+        a.collapse-item(href='expression') Expression
+  hr.sidebar-divider
+  // Sidebar Toggler (Sidebar)
+  .text-center.d-none.d-md-inline
+    button#sidebarToggle.rounded-circle.border-0
+  // Sidebar Message
