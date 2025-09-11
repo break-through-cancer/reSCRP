@@ -37,6 +37,12 @@
         margin-top: 15px;
     }
 }
+
+/* Constrain BTC png logo to 86px */
+.pagelogo img {
+    height: 86px;
+}
+
 .sticky-footer {
     background: black;
 }
