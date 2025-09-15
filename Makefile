@@ -11,7 +11,8 @@ docker-compose-up-watch:
 connect:
 	docker run -it --network rescrp_default --rm -v $(PWD)/data:/data mariadb mariadb --host scrp-mariadb --port 3306 --user root --password  --database tcm
 load-data:
-	docker compose exec db bash
+	# docker compose exec db bash
+	docker compose exec -T db mariadb -h $DB_HOST -P $DB_PORT -u $DB_USER -p$DB_PASS $DB_NAME < load_data.sql
 	# Then Run
 	# mariadb -ptest --database tcm < load_data.sql
 connect-mariadb:
