@@ -48,15 +48,63 @@ Proliferative_Obj <- readRDS(Proliferative_path)
 Treg_Obj <- readRDS(Treg_path)
 TFH_Obj <- readRDS(TFH_path)
 
-# Subsetting
-Treg_Obj <- subset(Treg_Obj, cells = Cells(Treg_Obj)[Cells(Treg_Obj) %in% Cells(CD4_Obj)])
-TFH_Obj <- subset(TFH_Obj, cells = Cells(TFH_Obj)[Cells(TFH_Obj) %in% Cells(CD4_Obj)])
+# Cell Subset Synchronization
+# ===========================
+# Treg and TFH are analyzed as subsets of CD4+ T cells, so we need to:
+# 1. Keep only cells that are present in both the subset and main CD4+ dataset
+# 2. Synchronize clinical metadata between the datasets for consistency
 
-# Columns relevant for TCM 
-for(tempColumn in c("CancerType", "TissueType", "OrganSite", "Disease", "Patient", "Sample")){
-  Treg_Obj@meta.data[,tempColumn] <- CD4_Obj@meta.data[match(Cells(Treg_Obj), Cells(CD4_Obj)), tempColumn]
-  TFH_Obj@meta.data[,tempColumn] <- CD4_Obj@meta.data[match(Cells(TFH_Obj), Cells(CD4_Obj)), tempColumn]
+# Helper function to synchronize cell subset with parent dataset
+synchronize_cell_subset <- function(subset_obj, parent_obj, subset_name) {
+  cat("Synchronizing", subset_name, "subset with CD4+ parent dataset...\n")
+
+  # Get cell identifiers
+  subset_cells <- Cells(subset_obj)
+  parent_cells <- Cells(parent_obj)
+
+  # Find overlapping cells
+  overlapping_cells <- subset_cells[subset_cells %in% parent_cells]
+  cat("  Found", length(overlapping_cells), "overlapping cells out of",
+      length(subset_cells), "total", subset_name, "cells\n")
+
+  # Subset to only include overlapping cells
+  synchronized_obj <- subset(subset_obj, cells = overlapping_cells)
+
+  return(synchronized_obj)
 }
+
+# Helper function to copy clinical metadata from parent to subset
+copy_clinical_metadata <- function(subset_obj, parent_obj, subset_name) {
+  cat("Copying clinical metadata to", subset_name, "subset...\n")
+
+  # Define clinical metadata columns to copy
+  clinical_columns <- c("CancerType", "TissueType", "OrganSite", "Disease", "Patient", "Sample")
+
+  subset_cells <- Cells(subset_obj)
+  parent_cells <- Cells(parent_obj)
+
+  # For each clinical column, copy values from parent to subset
+  for (clinical_column in clinical_columns) {
+    if (clinical_column %in% colnames(parent_obj@meta.data)) {
+      # Find matching cells and copy metadata
+      cell_matches <- match(subset_cells, parent_cells)
+      subset_obj@meta.data[, clinical_column] <- parent_obj@meta.data[cell_matches, clinical_column]
+      cat("  Copied", clinical_column, "metadata\n")
+    } else {
+      cat("  Warning:", clinical_column, "not found in parent metadata\n")
+    }
+  }
+
+  return(subset_obj)
+}
+
+# Synchronize Treg subset (regulatory T cells are a subset of CD4+ T cells)
+Treg_Obj <- synchronize_cell_subset(Treg_Obj, CD4_Obj, "Treg")
+Treg_Obj <- copy_clinical_metadata(Treg_Obj, CD4_Obj, "Treg")
+
+# Synchronize TFH subset (T follicular helper cells are a subset of CD4+ T cells)
+TFH_Obj <- synchronize_cell_subset(TFH_Obj, CD4_Obj, "TFH")
+TFH_Obj <- copy_clinical_metadata(TFH_Obj, CD4_Obj, "TFH")
 
 # Cell Type Mapping
 # Defines cell type annotations for each subset based on cluster numbers
@@ -154,59 +202,130 @@ metaCols <- c(
 lncT <- read_tsv("/rsrch3/home/genomic_med/ychu2/data/LncRNA/lncipedia_5_2_ensembl_92_genes.txt")
 gene.pattern <- c("MALAT1", "^MT-", "^MT.",  "^RPL", "^RPS", "^RP[0-9]+-", "^LOC(0-9)", "^MTRNR", "hsa-*", "[.].*")
 
-# Metadata Processing
-# For each cell type:
-# - Extracts UMAP coordinates and metadata
-# - Assigns cell type labels based on cluster assignments
-# - Exports metadata as TSV files with columns like Barcode, TissueType,
-# CancerType, Patient, etc.
-for(oi in 1:length(allObj)){
-  tempObjName <- names(allObj[oi])
-  tempObj <- allObj[[oi]]
-  tempCellTypes <- allCellType[[tempObjName]]
+# Helper Functions for Data Processing
+# =====================================
 
-  coord = Embeddings(object = tempObj, reduction = "umap")
-  colnames(coord) = c('UMAP1','UMAP2')
-  coord = data.frame(ID = rownames(coord), coord)
-  meta = tempObj@meta.data;
-  meta = data.frame(ID = rownames(meta), meta,stringsAsFactors = F)
-  meta = left_join(meta, coord, by = 'ID')
-  if(tempObjName %in% c("CD8")){
-    meanUMAP1 <- mean(meta$UMAP1)
-    meta$UMAP1 <- meanUMAP1 * 2 - meta$UMAP1
+# Extract UMAP coordinates from Seurat object
+extract_umap_coordinates <- function(seurat_obj) {
+  umap_coords <- Embeddings(object = seurat_obj, reduction = "umap")
+  colnames(umap_coords) <- c('UMAP1', 'UMAP2')
+  return(data.frame(ID = rownames(umap_coords), umap_coords))
+}
+
+# Process metadata for a single cell type
+process_cell_metadata <- function(seurat_obj, cell_type_name, cell_type_labels) {
+  cat("  Processing metadata...\n")
+
+  # Extract UMAP coordinates
+  umap_coords <- extract_umap_coordinates(seurat_obj)
+
+  # Extract and prepare metadata
+  metadata <- seurat_obj@meta.data
+  metadata <- data.frame(ID = rownames(metadata), metadata, stringsAsFactors = FALSE)
+  metadata <- left_join(metadata, umap_coords, by = 'ID')
+
+  # Apply CD8-specific coordinate transformation (flip UMAP1 for visualization)
+  if (cell_type_name == "CD8") {
+    cat("    Applying CD8 UMAP1 coordinate flip\n")
+    mean_umap1 <- mean(metadata$UMAP1)
+    metadata$UMAP1 <- mean_umap1 * 2 - metadata$UMAP1
   }
-  meta$Barcode <- Cells(tempObj)
-  meta$CellClusterType <- ""
-  meta$CellClusterType <- tempCellTypes[match(meta$seurat_clusters, 0:(length(tempCellTypes)-1))]
 
-  if(tempObjName %in% c("TFH", "Treg")){
-    outTable <- meta %>% select(Barcode, UMAP1, UMAP2, CellClusterType)
-  }else{
-    outTable <- meta %>% select(all_of(metaCols)) 
+  # Add cell identifiers and cluster type annotations
+  metadata$Barcode <- Cells(seurat_obj)
+  metadata$CellClusterType <- cell_type_labels[match(metadata$seurat_clusters,
+                                                    0:(length(cell_type_labels) - 1))]
+
+  return(metadata)
+}
+
+# Select appropriate columns for metadata output
+select_metadata_columns <- function(metadata, cell_type_name) {
+  # TFH and Treg have different schema - only basic columns available
+  if (cell_type_name %in% c("TFH", "Treg")) {
+    return(metadata %>% select(Barcode, UMAP1, UMAP2, CellClusterType))
+  } else {
+    return(metadata %>% select(all_of(metaCols)))
   }
-  write_tsv(outTable, file.path(getwd(), paste0(tempObjName, '_meta', "_", Sys.Date(), '.tsv')))
+}
 
-  # Expression Data Processing
-  tempObj <- FindVariableFeatures(tempObj, selection.method = "vst", nfeatures = 1500, verbose = FALSE)
-  hvg = VariableFeatures(tempObj)
+# Filter genes based on patterns and lncRNA database
+filter_unwanted_genes <- function(gene_list) {
+  cat("    Filtering unwanted gene patterns and lncRNAs...\n")
 
-  tempDEGs <- read_tsv(allDEGPath[[tempObjName]]) %>% pull(gene)
-  hvg <- union(tempDEGs, hvg)
-  hvg <- hvg[!hvg %in% grep(paste0(gene.pattern, collapse = "|"), hvg, value = T)]
-  hvg <- hvg[!hvg %in% lncT$lncipediaGeneID]
-  hvg <- unique(hvg)
+  # Remove genes matching unwanted patterns
+  filtered_genes <- gene_list[!gene_list %in% grep(paste0(gene.pattern, collapse = "|"),
+                                                   gene_list, value = TRUE)]
 
-  print("length(hvg)")
-  print(length(hvg))
+  # Remove long non-coding RNAs
+  filtered_genes <- filtered_genes[!filtered_genes %in% lncT$lncipediaGeneID]
 
-  dataAssay = GetAssayData(tempObj, assay = "RNA", slot = "data")
-  sub = dataAssay[hvg, ]
-  markerID <- rownames(sub)
-  cellID <- colnames(sub)
+  return(unique(filtered_genes))
+}
 
-  outData <- as_tibble(t(as.matrix(sub)))
-  outData$Barcode <- cellID
-  outData <- outData %>% select(Barcode, all_of(markerID)) %>% gather(Marker, EXP, -Barcode)
+# Process expression data for a single cell type
+process_expression_data <- function(seurat_obj, cell_type_name, deg_path) {
+  cat("  Processing expression data...\n")
 
-  write_tsv(outData, file.path(getwd(), paste0(tempObjName, '_EXP', "_", Sys.Date(), '.tsv')))
+  # Find highly variable genes
+  seurat_obj <- FindVariableFeatures(seurat_obj, selection.method = "vst",
+                                    nfeatures = 1500, verbose = FALSE)
+  highly_variable_genes <- VariableFeatures(seurat_obj)
+
+  # Load differentially expressed genes for this cell type
+  deg_genes <- read_tsv(deg_path, show_col_types = FALSE) %>% pull(gene)
+
+  # Combine HVGs and DEGs
+  selected_genes <- union(deg_genes, highly_variable_genes)
+
+  # Filter out unwanted genes
+  final_gene_list <- filter_unwanted_genes(selected_genes)
+
+  cat("    Final gene count:", length(final_gene_list), "\n")
+
+  # Extract expression matrix
+  expression_matrix <- GetAssayData(seurat_obj, assay = "RNA", slot = "data")
+  expression_subset <- expression_matrix[final_gene_list, ]
+
+  # Convert to long format for database storage
+  gene_ids <- rownames(expression_subset)
+  cell_ids <- colnames(expression_subset)
+
+  expression_data <- as_tibble(t(as.matrix(expression_subset)))
+  expression_data$Barcode <- cell_ids
+  expression_data <- expression_data %>%
+    select(Barcode, all_of(gene_ids)) %>%
+    gather(Marker, EXP, -Barcode)
+
+  return(expression_data)
+}
+
+# Main Processing Loop
+# ===================
+
+# Process each cell type for metadata and expression data
+for (cell_type_name in names(allObj)) {
+  cat("\n=== Processing cell type:", cell_type_name, "===\n")
+
+  # Get objects and parameters for this cell type
+  seurat_obj <- allObj[[cell_type_name]]
+  cell_type_labels <- allCellType[[cell_type_name]]
+  deg_path <- allDEGPath[[cell_type_name]]
+
+  # Process and export metadata
+  cat("METADATA PROCESSING:\n")
+  processed_metadata <- process_cell_metadata(seurat_obj, cell_type_name, cell_type_labels)
+  output_metadata <- select_metadata_columns(processed_metadata, cell_type_name)
+
+  metadata_filename <- paste0(cell_type_name, '_meta_', Sys.Date(), '.tsv')
+  write_tsv(output_metadata, file.path(getwd(), metadata_filename))
+  cat("  Saved:", metadata_filename, "\n")
+
+  # Process and export expression data
+  cat("EXPRESSION PROCESSING:\n")
+  expression_data <- process_expression_data(seurat_obj, cell_type_name, deg_path)
+
+  expression_filename <- paste0(cell_type_name, '_EXP_', Sys.Date(), '.tsv')
+  write_tsv(expression_data, file.path(getwd(), expression_filename))
+  cat("  Saved:", expression_filename, "\n")
 }
