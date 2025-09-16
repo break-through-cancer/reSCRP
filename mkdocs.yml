@@ -1,0 +1,73 @@
+site_name: reSCRP Documentation
+site_description: Single Cell RNA-seq Portal (SCRP)
+site_author: reSCRP Team
+site_url: https://github.com/break-through-cancer/reSCRP
+
+# Development server configuration
+dev_addr: '127.0.0.1:8005'
+
+# Repository
+repo_name: break-through-cancer/reSCRP
+repo_url: https://github.com/break-through-cancer/reSCRP
+
+# Configuration
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - tables
+  - toc:
+      permalink: true
+
+# Page tree
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Quick Start: getting-started/quick-start.md
+    - Tutorial-TCM: getting-started/tutorial-tcm.md
+    - Configuration: getting-started/configuration.md
+  - Data Processing:
+    - Overview: data-processing/overview.md
+
+# Plugins
+plugins:
+  - search
+  - mkdocstrings
+
+# Extra
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/break-through-cancer/reSCRP
