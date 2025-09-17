@@ -30,6 +30,6 @@ If you encounter issues or have questions:
 2. Search existing [GitHub Issues](https://github.com/break-through-cancer/reSCRP/issues)
 3. Create a new issue with detailed information
 
-## License
+## About
 
 This project is developed as part of the Break Through Cancer initiative for advancing cancer research through real-time data sharing and interdisciplinary teamwork to accerlate progress.
