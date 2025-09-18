@@ -6,7 +6,7 @@ var pool = require("../../SQL/GastricCancer/pool");
 
 router.get("/GastricCancer", function (req, res, next) {
   console.log("router GastricCancer");
-  res.render("GastricCancer/index.jade", { title: "Overview" });
+  res.render("GastricCancer/index.pug", { title: "Overview" });
 });
 
 router.get("/GastricCancer/embedding", function (req, res, next) {
@@ -20,7 +20,7 @@ router.get("/GastricCancer/embedding", function (req, res, next) {
     pool.queryDist(req, res, next);
   } else {
     // console.log(req.query.name);
-    res.render("GastricCancer/embedding.jade", { title: "Embedding" });
+    res.render("GastricCancer/embedding.pug", { title: "Embedding" });
   }
 });
 
@@ -31,7 +31,7 @@ router.get("/GastricCancer/degs", function (req, res, next) {
   } else if (req.query.name === "submit") {
     pool.queryDEGsIMG(req, res, next);
   } else {
-    res.render("GastricCancer/degs.jade", { title: "DEGs" });
+    res.render("GastricCancer/degs.pug", { title: "DEGs" });
   }
 });
 
@@ -44,7 +44,7 @@ router.get("/GastricCancer/expression", function (req, res, next) {
   } else if (req.query.name === "submit") {
     pool.queryMarkerDist(req, res, next);
   } else {
-    res.render("GastricCancer/expression.jade", { title: "Expression" });
+    res.render("GastricCancer/expression.pug", { title: "Expression" });
   }
 });
 

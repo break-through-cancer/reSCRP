@@ -6,7 +6,7 @@ var pool = require("../../SQL/BcellLC/pool");
 /* GET home page. */
 router.get("/BcellLC", function (req, res, next) {
     console.log("router BcellLC");
-    res.render("BcellLC/index.jade", { title: "Overview" });
+    res.render("BcellLC/index.pug", { title: "Overview" });
 });
 
 router.get("/BcellLC/embedding", function (req, res, next) {
@@ -19,7 +19,7 @@ router.get("/BcellLC/embedding", function (req, res, next) {
         console.log("router.queryDist");
         pool.queryDist(req, res, next);
     } else {
-        res.render("BcellLC/embedding.jade", { title: "Embedding" });
+        res.render("BcellLC/embedding.pug", { title: "Embedding" });
     }
 });
 
@@ -32,7 +32,7 @@ router.get("/BcellLC/degs", function (req, res, next) {
     } else if (req.query.name === "submit") {
         pool.queryDEGsIMG(req, res, next);
     } else {
-        res.render("BcellLC/degs.jade", { title: "DEGs" });
+        res.render("BcellLC/degs.pug", { title: "DEGs" });
     }
 });
 
@@ -44,7 +44,7 @@ router.get("/BcellLC/expression", function (req, res, next) {
     } else if (req.query.name === "submit") {
         pool.queryMarkerDist(req, res, next);
     } else {
-        res.render("BcellLC/expression.jade", { title: "Expression" });
+        res.render("BcellLC/expression.pug", { title: "Expression" });
     }
 });
 
@@ -56,7 +56,7 @@ router.get("/BcellLC/bcr", function (req, res, next) {
     } else if (req.query.name === "submit") {
         pool.queryBCRDist(req, res, next);
     } else {
-        res.render("BcellLC/bcr.jade", { title: "BCR" });
+        res.render("BcellLC/bcr.pug", { title: "BCR" });
     }
 });
 
