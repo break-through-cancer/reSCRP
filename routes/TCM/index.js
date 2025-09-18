@@ -27,7 +27,7 @@ var pool = require("../../SQL/TCM/pool");
 
 router.get("/TCM", function (req, res, next) {
   console.log("router TCM");
-  res.render("TCM/index.jade", { title: "Overview" });
+  res.render("TCM/index.pug", { title: "Overview" });
 });
 
 router.get("/TCM/download/CD8", function (req, res, next) {
@@ -122,7 +122,7 @@ router.get("/TCM/embedding", function (req, res, next) {
     }
   } else {
     console.log(req.query.name);
-    res.render("TCM/embedding.jade", { title: "Embedding" });
+    res.render("TCM/embedding.pug", { title: "Embedding" });
   }
 });
 
@@ -133,7 +133,7 @@ router.get("/TCM/degs", function (req, res, next) {
   } else if (req.query.name === "submit") {
     pool.queryDEGsIMG(req, res, next);
   } else {
-    res.render("TCM/degs.jade", { title: "DEGs" });
+    res.render("TCM/degs.pug", { title: "DEGs" });
   }
 });
 
@@ -170,7 +170,7 @@ router.get("/TCM/expression", function (req, res, next) {
   } else if (req.query.name === "submit") {
     pool.queryMarkerDist(req, res, next);
   } else {
-    res.render("TCM/expression.jade", { title: "Expression" });
+    res.render("TCM/expression.pug", { title: "Expression" });
   }
 });
 

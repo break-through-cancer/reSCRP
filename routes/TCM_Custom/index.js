@@ -27,7 +27,7 @@ var pool = require("../../SQL/TCM_Custom/pool");
 
 router.get("/TCM_Custom", function (req, res, next) {
   console.log("router TCM");
-  res.render("TCM_Custom/index.jade", { title: "Overview" });
+  res.render("TCM_Custom/index.pug", { title: "Overview" });
 });
 
 router.get("/TCM_Custom/download/CD8", function (req, res, next) {
@@ -122,7 +122,7 @@ router.get("/TCM_Custom/embedding", function (req, res, next) {
     }
   } else {
     console.log(req.query.name);
-    res.render("TCM_Custom/embedding.jade", { title: "Embedding" });
+    res.render("TCM_Custom/embedding.pug", { title: "Embedding" });
   }
 });
 
@@ -133,7 +133,7 @@ router.get("/TCM_Custom/degs", function (req, res, next) {
   } else if (req.query.name === "submit") {
     pool.queryDEGsIMG(req, res, next);
   } else {
-    res.render("TCM_Custom/degs.jade", { title: "DEGs" });
+    res.render("TCM_Custom/degs.pug", { title: "DEGs" });
   }
 });
 
@@ -170,7 +170,7 @@ router.get("/TCM_Custom/expression", function (req, res, next) {
   } else if (req.query.name === "submit") {
     pool.queryMarkerDist(req, res, next);
   } else {
-    res.render("TCM_Custom/expression.jade", { title: "Expression" });
+    res.render("TCM_Custom/expression.pug", { title: "Expression" });
   }
 });
 

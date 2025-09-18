@@ -6,7 +6,7 @@ var pool = require("../../SQL/GastricTME/pool");
 
 router.get("/GastricTME", function (req, res, next) {
   console.log("router GastricTME");
-  res.render("GastricTME/index.jade", { title: "Overview" });
+  res.render("GastricTME/index.pug", { title: "Overview" });
 });
 
 router.get("/GastricTME/embedding", function (req, res, next) {
@@ -17,7 +17,7 @@ router.get("/GastricTME/embedding", function (req, res, next) {
   } else if (req.query.name === "submit") {
     pool.queryDist(req, res, next);
   } else {
-    res.render("GastricTME/embedding.jade", { title: "Embedding" });
+    res.render("GastricTME/embedding.pug", { title: "Embedding" });
   }
 });
 
@@ -29,7 +29,7 @@ router.get("/GastricTME/degs", function (req, res, next) {
   } else if (req.query.name === "submit") {
     pool.queryDEGsIMG(req, res, next);
   } else {
-    res.render("GastricTME/degs.jade", { title: "DEGs" });
+    res.render("GastricTME/degs.pug", { title: "DEGs" });
   }
 });
 
@@ -40,7 +40,7 @@ router.get("/GastricTME/expression", function (req, res, next) {
   } else if (req.query.name === "submit") {
     pool.queryMarkerDist(req, res, next);
   } else {
-    res.render("GastricTME/expression.jade", { title: "Expression" });
+    res.render("GastricTME/expression.pug", { title: "Expression" });
   }
 });
 
