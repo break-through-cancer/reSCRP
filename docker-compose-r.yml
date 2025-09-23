@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  r-processor:
+    build:
+      context: .
+      dockerfile: Dockerfile.r-processor
+    container_name: rescrp-r-processor
+    volumes:
+      # Mount data directories
+      - ./data:/app/data
+      - ./scripts:/app/scripts
+      # Mount the actual data source directly to where symlinks point
+      - ${HOME}/Data/btc-share:/app/data/raw/GBM:ro
+    working_dir: /app
+    environment:
+      - R_LIBS_USER=/usr/local/lib/R/site-library
+    # Keep container running for interactive use
+    stdin_open: true
+    tty: true
+    command: /bin/bash
