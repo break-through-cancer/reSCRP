@@ -1,0 +1,67 @@
+# R Data Processing Container for reSCRP
+# =====================================
+# This container provides R environment for single-cell RNA-seq data preprocessing
+
+FROM rocker/tidyverse:latest
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
+    libhdf5-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libgit2-dev \
+    cmake \
+    build-essential \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install basic R packages (tidyverse already included in base image)
+RUN R -e "install.packages(c('BiocManager', 'remotes', 'devtools'), repos='https://cran.rstudio.com/')"
+
+# Install additional data manipulation packages
+RUN R -e "install.packages(c('data.table', 'Matrix', 'RColorBrewer', 'viridis'), repos='https://cran.rstudio.com/')"
+
+# Install plotting packages
+RUN R -e "install.packages(c('patchwork', 'cowplot'), repos='https://cran.rstudio.com/')"
+
+# Install future packages for parallel processing
+RUN R -e "install.packages(c('future', 'future.apply', 'progressr'), repos='https://cran.rstudio.com/')"
+
+# Install Bioconductor packages
+RUN R -e "BiocManager::install(c('multtest', 'S4Vectors', 'SummarizedExperiment', 'SingleCellExperiment', 'BiocGenerics', 'GenomicRanges', 'IRanges'))"
+
+# Install HDF5 support for R
+RUN R -e "BiocManager::install('rhdf5')"
+RUN R -e "install.packages('hdf5r', repos='https://cran.rstudio.com/')"
+
+# Install Seurat and related packages
+RUN R -e "install.packages(c('SeuratObject', 'Seurat'), repos='https://cran.rstudio.com/')"
+
+# Install SeuratDisk for H5AD file support
+RUN R -e "remotes::install_github('mojaveazure/seurat-disk')"
+
+# Install additional Bioconductor packages (optional)
+RUN R -e "BiocManager::install(c('MAST', 'DESeq2', 'limma', 'edgeR'), update=FALSE, ask=FALSE)" || echo "Some Bioconductor packages failed to install but continuing..."
+
+# Copy R scripts
+COPY scripts/ /app/scripts/
+
+# Create data directories
+RUN mkdir -p /app/data/raw/GBM /app/data/processed/ovarian
+
+# Set permissions
+RUN chmod +x /app/scripts/*.R
+
+# Default command
+CMD ["R", "--version"]
+
+# Labels
+LABEL maintainer="reSCRP Team"
+LABEL description="R environment for single-cell RNA-seq preprocessing"
+LABEL version="1.0.0"
