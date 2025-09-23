@@ -9,7 +9,9 @@
   "scripts": {
     "start": "node ./bin/www",
     "start-with-ssl": "node ./bin/www --with-ssl",
-    "start-with-hot-reload": "nodemon -e '*' ./bin/www"
+    "start-with-hot-reload": "nodemon -e '*' ./bin/www",
+    "preprocess:ovarian": "./scripts/run_ovarian_preprocessing.sh",
+    "r-shell": "docker compose -f docker-compose-r.yml run --rm r-processor /bin/bash"
   },
   "dependencies": {
     "@ebi-gene-expression-group/anatomogram": "^2.4.0",
