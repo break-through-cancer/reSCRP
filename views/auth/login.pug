@@ -1,0 +1,43 @@
+extends ../layout
+
+block content
+  .container.d-flex.justify-content-center.align-items-center.min-vh-100
+    .row.w-100
+      .col-md-6.col-lg-4.mx-auto
+        .card.shadow
+          .card-body.p-4
+            .text-center.mb-4
+              h2.h4.text-gray-900 Sign In to SCRP
+              p.text-muted Single Cell Research Portal
+
+            if error
+              .alert.alert-danger.alert-dismissible.fade.show(role='alert')
+                if error === 'azure_login_failed'
+                  | Azure login failed. Please try again.
+                else if error === 'authentication_failed'
+                  | Authentication failed. Please check your credentials.
+                else
+                  | Login error. Please try again.
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+
+            .d-grid.gap-2
+              a.btn.btn-primary.btn-lg(href='/auth/login/azure')
+                i.fab.fa-microsoft.me-2
+                | Sign in with Microsoft Azure
+
+            .text-center.mt-4
+              small.text-muted
+                | By signing in, you agree to our terms of service and privacy policy.
+
+  style.
+    .min-vh-100 {
+      min-height: 100vh !important;
+    }
+    .btn-lg {
+      padding: 12px 24px;
+      font-size: 16px;
+    }
+    .card {
+      border: none;
+      border-radius: 15px;
+    }

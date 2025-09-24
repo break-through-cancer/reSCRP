@@ -1,0 +1,52 @@
+extends ../layout
+
+block content
+  .container.mt-5
+    .row
+      .col-md-8.mx-auto
+        .card.shadow
+          .card-header.bg-primary.text-white
+            h4.mb-0
+              i.fas.fa-user.me-2
+              | User Profile
+
+          .card-body.p-4
+            .row
+              .col-md-4.text-center.mb-4
+                .bg-light.rounded-circle.d-inline-flex.align-items-center.justify-content-center(style='width: 120px; height: 120px;')
+                  i.fas.fa-user.fa-3x.text-muted
+                h5.mt-3= user.displayName
+                p.text-muted= user.email
+
+              .col-md-8
+                h5.mb-3 Account Information
+                .table-responsive
+                  table.table.table-borderless
+                    tbody
+                      tr
+                        td.fw-bold Display Name:
+                        td= user.displayName
+                      tr
+                        td.fw-bold Email:
+                        td= user.email
+                      if user.firstName
+                        tr
+                          td.fw-bold First Name:
+                          td= user.firstName
+                      if user.lastName
+                        tr
+                          td.fw-bold Last Name:
+                          td= user.lastName
+                      tr
+                        td.fw-bold User ID:
+                        td= user.id
+
+            .row.mt-4
+              .col-12
+                .d-flex.justify-content-between.align-items-center
+                  a.btn.btn-outline-primary(href='/')
+                    i.fas.fa-arrow-left.me-2
+                    | Back to Home
+                  a.btn.btn-danger(href='/auth/logout')
+                    i.fas.fa-sign-out-alt.me-2
+                    | Sign Out
