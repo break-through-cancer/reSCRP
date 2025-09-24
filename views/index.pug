@@ -20,6 +20,21 @@ block content
           li
             a.nav-link.scrollto(href='https://breakthroughcancer.org',
             target="_blank") Contact
+          if authEnabled
+            if isAuthenticated
+              li
+                a.nav-link(href='/auth/profile')
+                  i.bi.bi-person.me-1
+                  | #{user.displayName}
+              li
+                a.nav-link(href='/auth/logout')
+                  i.bi.bi-box-arrow-right.me-1
+                  | Sign Out
+            else
+              li
+                a.nav-link(href='/auth/login')
+                  i.bi.bi-box-arrow-in-right.me-1
+                  | Sign In
         i.bi.bi-list.mobile-nav-toggle
 
   // End Header
