@@ -3,11 +3,11 @@ extends layout
 block content
   #wrapper
     // Sidebar
-    include sidebar.jade
+    include sidebar.pug
     #content-wrapper.d-flex.flex-column
       #content
         // Topbar
-        include header.jade
+        include header.pug
         // Begin Page Content
         .container-fluid
           // Page Heading
@@ -74,7 +74,7 @@ block content
                   .lds-dual-ring.hidden.overlay#loader2
 
           script(src='/BcellLC/javascripts/expression_query.js')
-        include footer.jade
+        include footer.pug
         a.scroll-to-top.rounded(onClick="document.documentElement.scrollIntoView({ behavior: 'smooth' });")
           i.fas.fa-angle-up
 

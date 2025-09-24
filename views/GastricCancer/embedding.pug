@@ -3,11 +3,11 @@ extends layout
 block content
   #wrapper
     // Sidebar
-    include sidebar.jade
+    include sidebar.pug
     // Content Wrapper
     #content-wrapper.d-flex.flex-column
       #content
-        include header.jade
+        include header.pug
         // Topbar
         // Begin Page Content
         .container-fluid
@@ -62,7 +62,7 @@ block content
                   .lds-dual-ring.hidden.overlay#loader3
           script(src='/GastricCancer/javascripts/embedding_query.js')
 
-        include footer.jade
+        include footer.pug
         a.scroll-to-top.rounded(onClick="document.documentElement.scrollIntoView({ behavior: 'smooth' });")
           i.fas.fa-angle-up
 
