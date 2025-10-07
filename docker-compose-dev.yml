@@ -41,7 +41,6 @@ services:
       - 3307:3306
     volumes:
       - ./data/TCM:/data/TCM
-      - ./load_data.sql:/load_data.sql
       - ./data/db:/var/lib/mysql:Z
       - ./seed.sql:/docker-entrypoint-initdb.d/seed.sql
     environment:
