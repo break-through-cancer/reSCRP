@@ -1,0 +1,145 @@
+-- Load TCM data from TSV files
+
+-- -- CD4 Meta Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/CD4_meta.tsv"
+-- INTO TABLE CD4_meta
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+-- 
+-- -- CD8 Meta Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/CD8_meta.tsv"
+-- INTO TABLE CD8_meta
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+-- 
+-- -- Innate Meta Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/Innate_meta.tsv"
+-- INTO TABLE Innate_meta
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+-- 
+-- -- Proliferative Meta Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/Proliferative_meta.tsv"
+-- INTO TABLE Proliferative_meta
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+-- 
+-- -- TFH Meta Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/TFH_meta.tsv"
+-- INTO TABLE TFH_meta
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+-- 
+-- -- Treg Meta Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/Treg_meta.tsv"
+-- INTO TABLE Treg_meta
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+
+-- CD4 Expression Data
+LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/CD4_EXP.tsv"
+INTO TABLE CD4_EXP
+FIELDS TERMINATED BY '\t'
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+-- CD8 Expression Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/CD8_EXP.tsv"
+-- INTO TABLE CD8_EXP
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+
+-- -- Innate Expression Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/Innate_EXP.tsv"
+-- INTO TABLE Innate_EXP
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+-- 
+-- -- Proliferative Expression Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/Proliferative_EXP.tsv"
+-- INTO TABLE Proliferative_EXP
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+
+-- -- TFH Expression Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/TFH_EXP.tsv"
+-- INTO TABLE TFH_EXP
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+-- 
+-- -- Treg Expression Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/Treg_EXP.tsv"
+-- INTO TABLE Treg_EXP
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+-- 
+-- -- CD4 DEG Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/CD4_DEG.tsv"
+-- INTO TABLE CD4_DEG
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+-- 
+-- -- CD8 DEG Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/CD8_DEG.tsv"
+-- INTO TABLE CD8_DEG
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+-- 
+-- -- Innate DEG Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/Innate_DEG.tsv"
+-- INTO TABLE Innate_DEG
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+-- 
+-- -- Proliferative DEG Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/Proliferative_DEG.tsv"
+-- INTO TABLE Proliferative_DEG
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+-- 
+-- -- TFH DEG Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/TFH_DEG.tsv"
+-- INTO TABLE TFH_DEG
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+-- 
+-- -- Treg DEG Data
+-- LOAD DATA LOCAL INFILE "/data/TCM/tsv_output/Treg_DEG.tsv"
+-- INTO TABLE Treg_DEG
+-- FIELDS TERMINATED BY '\t'
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
