@@ -37,48 +37,48 @@ CREATE TABLE CD4_EXP (
     Barcode TEXT NOT NULL,          -- Cell identifier
     Marker TEXT NOT NULL,           -- Gene name
     EXP DOUBLE NOT NULL,           -- Normalized expression value
-    INDEX idx_marker_barcode (Marker, Barcode),
-    INDEX idx_barcode_marker (Barcode, Marker)
+    INDEX idx_marker_barcode (Marker(255), Barcode(255)),
+    INDEX idx_barcode_marker (Barcode(255), Marker(255))
 );
 
 CREATE TABLE CD8_EXP (
     Barcode TEXT NOT NULL,
     Marker TEXT NOT NULL,
     EXP DOUBLE NOT NULL,
-    INDEX idx_marker_barcode (Marker, Barcode),
-    INDEX idx_barcode_marker (Barcode, Marker)
+    INDEX idx_marker_barcode (Marker(255), Barcode(255)),
+    INDEX idx_barcode_marker (Barcode(255), Marker(255))
 );
 
 CREATE TABLE Innate_EXP (
     Barcode TEXT NOT NULL,
     Marker TEXT NOT NULL,
     EXP DOUBLE NOT NULL,
-    INDEX idx_marker_barcode (Marker, Barcode),
-    INDEX idx_barcode_marker (Barcode, Marker)
+    INDEX idx_marker_barcode (Marker(255), Barcode(255)),
+    INDEX idx_barcode_marker (Barcode(255), Marker(255))
 );
 
 CREATE TABLE Proliferative_EXP (
     Barcode TEXT NOT NULL,
     Marker TEXT NOT NULL,
     EXP DOUBLE NOT NULL,
-    INDEX idx_marker_barcode (Marker, Barcode),
-    INDEX idx_barcode_marker (Barcode, Marker)
+    INDEX idx_marker_barcode (Marker(255), Barcode(255)),
+    INDEX idx_barcode_marker (Barcode(255), Marker(255))
 );
 
 CREATE TABLE Treg_EXP (
     Barcode TEXT NOT NULL,
     Marker TEXT NOT NULL,
     EXP DOUBLE NOT NULL,
-    INDEX idx_marker_barcode (Marker, Barcode),
-    INDEX idx_barcode_marker (Barcode, Marker)
+    INDEX idx_marker_barcode (Marker(255), Barcode(255)),
+    INDEX idx_barcode_marker (Barcode(255), Marker(255))
 );
 
 CREATE TABLE TFH_EXP (
     Barcode TEXT NOT NULL,
     Marker TEXT NOT NULL,
     EXP DOUBLE NOT NULL,
-    INDEX idx_marker_barcode (Marker, Barcode),
-    INDEX idx_barcode_marker (Barcode, Marker)
+    INDEX idx_marker_barcode (Marker(255), Barcode(255)),
+    INDEX idx_barcode_marker (Barcode(255), Marker(255))
 );
 
 -- Metadata Tables
@@ -87,7 +87,7 @@ CREATE TABLE TFH_EXP (
 
 -- Standard metadata schema (CD4, CD8, Innate, Proliferative)
 CREATE TABLE CD4_meta (
-    Barcode TEXT PRIMARY KEY,       -- Cell identifier (unique)
+    Barcode VARCHAR(255) PRIMARY KEY,       -- Cell identifier (unique)
     TissueType TEXT,               -- Tissue of origin
     CancerType TEXT,               -- Cancer classification
     Patient TEXT,                  -- Patient identifier
@@ -98,7 +98,7 @@ CREATE TABLE CD4_meta (
 );
 
 CREATE TABLE CD8_meta (
-    Barcode TEXT PRIMARY KEY,
+    Barcode VARCHAR(255) PRIMARY KEY,
     TissueType TEXT,
     CancerType TEXT,
     Patient TEXT,
@@ -109,7 +109,7 @@ CREATE TABLE CD8_meta (
 );
 
 CREATE TABLE Innate_meta (
-    Barcode TEXT PRIMARY KEY,
+    Barcode VARCHAR(255) PRIMARY KEY,
     TissueType TEXT,
     CancerType TEXT,
     Patient TEXT,
@@ -120,7 +120,7 @@ CREATE TABLE Innate_meta (
 );
 
 CREATE TABLE Proliferative_meta (
-    Barcode TEXT PRIMARY KEY,
+    Barcode VARCHAR(255) PRIMARY KEY,
     TissueType TEXT,
     CancerType TEXT,
     Patient TEXT,
@@ -133,14 +133,14 @@ CREATE TABLE Proliferative_meta (
 -- Simplified metadata schema (Treg, TFH - subset analyses)
 -- Note: Clinical metadata inherited from parent CD4+ dataset
 CREATE TABLE Treg_meta (
-    Barcode TEXT PRIMARY KEY,
+    Barcode VARCHAR(255) PRIMARY KEY,
     UMAP1 DOUBLE,
     UMAP2 DOUBLE,
     CellClusterType TEXT
 );
 
 CREATE TABLE TFH_meta (
-    Barcode TEXT PRIMARY KEY,
+    Barcode VARCHAR(255) PRIMARY KEY,
     UMAP1 DOUBLE,
     UMAP2 DOUBLE,
     CellClusterType TEXT
