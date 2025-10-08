@@ -254,6 +254,8 @@ module.exports = {
               .data({ csvPathFile: path })
               .call(function (errR, dR) {
                 // cleanupCallback();
+                console.log("Logging errR: " + errR);
+                // console.log("Logging DR: " + dR);
                 if (errR) throw errR;
                 res.send(JSON.parse(dR));
               });
