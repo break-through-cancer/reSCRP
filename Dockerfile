@@ -11,7 +11,7 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 
 # Install R packages with dependencies
-RUN R -e "install.packages(c('sys', 'askpass', 'openssl', 'ggplot2', 'dplyr', 'readr', 'jsonlite'), repos = 'http://cran.rstudio.com/', dependencies = TRUE)"
+RUN R -e "install.packages(c('sys', 'askpass', 'openssl', 'ggplot2', 'dplyr', 'readr', 'tidyr', 'pheatmap', 'base64', 'jsonlite'), repos = 'http://cran.rstudio.com/', dependencies = TRUE)"
 
 WORKDIR /scrp
 
