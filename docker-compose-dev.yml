@@ -1,6 +1,8 @@
 services:
   scrp:
-    build: .
+    build:
+      context: . 
+      dockerfile: Dockerfile.ubuntu
     command: npm run start-with-hot-reload
     develop:
       watch:
