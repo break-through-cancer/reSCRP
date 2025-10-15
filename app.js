@@ -10,10 +10,29 @@ var logger = require("morgan");
 var session = require("express-session");
 
 // Import authentication configuration (if enabled)
-let passport = null;
+let authConfig = null;
 if (process.env.AUTH_METHOD === 'oauth2') {
-  const authConfig = require("./config/auth");
-  passport = authConfig.passport;
+  console.log('=== Authentication Configuration ===');
+  console.log('AUTH_METHOD: oauth2 (authentication ENABLED)');
+  authConfig = require("./config/auth");
+
+  if (authConfig.msalInstance) {
+    console.log('✓ MSAL initialized successfully');
+    console.log('✓ Azure AD OAuth2 with MSAL configured');
+    console.log('  - Tenant ID:', process.env.AZURE_TENANT_ID ? '***' + process.env.AZURE_TENANT_ID.slice(-4) : 'NOT SET');
+    console.log('  - Client ID:', process.env.AZURE_CLIENT_ID ? '***' + process.env.AZURE_CLIENT_ID.slice(-4) : 'NOT SET');
+    console.log('  - Client Secret:', process.env.AZURE_CLIENT_SECRET ? 'SET' : 'NOT SET');
+    console.log('  - Redirect URL:', process.env.AZURE_REDIRECT_URL || 'http://localhost:3000/auth/callback (default)');
+  } else {
+    console.error('✗ Failed to initialize MSAL');
+  }
+  console.log('===================================');
+} else {
+  console.log('=== Authentication Configuration ===');
+  console.log('AUTH_METHOD:', process.env.AUTH_METHOD || '(not set)');
+  console.log('Authentication is DISABLED - all routes are publicly accessible');
+  console.log('To enable authentication, set AUTH_METHOD=oauth2 in your .env file');
+  console.log('===================================');
 }
 
 var indexRouter = require("./routes/index");
@@ -37,44 +56,78 @@ app.use(helmet.frameguard({ action: 'deny' }));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 
-// Authentication middleware (only if enabled)
-if (process.env.AUTH_METHOD === 'oauth2' && passport) {
-  // Session configuration
-  app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-secret-key-change-in-production',
-    resave: false,
-    saveUninitialized: false,
+// Cookie parser (required for MSAL cookie-based auth)
+const sessionSecret = process.env.SESSION_SECRET || 'your-secret-key-change-in-production';
+app.use(cookieParser(sessionSecret));
+
+// Serve static files BEFORE authentication middleware
+// This ensures CSS, JS, images, etc. are always accessible
+app.use(express.static(path.join(__dirname, "public")));
+
+// Session configuration (still needed for CSRF state validation)
+if (process.env.AUTH_METHOD === 'oauth2' && authConfig) {
+  if (!process.env.SESSION_SECRET) {
+    console.warn('⚠ WARNING: SESSION_SECRET not set, using default (not secure for production)');
+  }
+
+  const sessionMiddleware = session({
+    secret: sessionSecret,
+    resave: true,  // Force session to be saved even if unmodified
+    saveUninitialized: true,  // Save new sessions (needed for OAuth state)
+    name: 'scrp.sid',
     cookie: {
-      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+      secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      sameSite: 'lax',
+      path: '/'
     }
-  }));
+  });
 
-  // Initialize Passport
-  app.use(passport.initialize());
-  app.use(passport.session());
+  app.use(sessionMiddleware);
+  console.log('✓ Session management enabled (for CSRF protection)');
 
-  // Make user available in templates
+  // Middleware to check session for authenticated user and make available to routes
   app.use(function(req, res, next) {
-    res.locals.user = req.user;
+    // Check if user exists in session
+    if (req.session && req.session.user) {
+      req.user = req.session.user.account;
+      req.accessToken = req.session.user.accessToken;
+      req.isAuthenticated = () => true;
+
+      // Only log for non-static file requests
+      if (!req.path.startsWith('/assets') && !req.path.startsWith('/stylesheets')) {
+        console.log(`[Auth] User authenticated: ${req.session.user.email || req.session.user.displayName}`);
+      }
+    } else {
+      req.isAuthenticated = () => false;
+
+      // Only log for non-static file requests
+      if (!req.path.startsWith('/assets') && !req.path.startsWith('/stylesheets')) {
+        console.log(`[Auth] No authenticated user in session for: ${req.method} ${req.path}`);
+      }
+    }
+
+    // Make user available in templates
+    res.locals.user = req.user || null;
     res.locals.isAuthenticated = req.isAuthenticated();
     res.locals.authEnabled = true;
+
     next();
   });
+
+  console.log('✓ MSAL authentication middleware registered');
 } else {
   // No authentication - make variables available but false
   app.use(function(req, res, next) {
+    req.isAuthenticated = () => false;
     res.locals.user = null;
     res.locals.isAuthenticated = false;
     res.locals.authEnabled = false;
     next();
   });
 }
-
-app.use(express.static(path.join(__dirname, "public")));
 
 // READ IN FROM CMD AND LOAD MODULE
 const enabled_modules = process.env.MODULES.split(',');
@@ -89,6 +142,7 @@ const _routers = {
 // Register authentication router (only if enabled)
 if (process.env.AUTH_METHOD === 'oauth2') {
   app.use("/auth", authRouter);
+  console.log('✓ Authentication routes registered at /auth');
 }
 
 // Register main index router

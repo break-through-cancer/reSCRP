@@ -1,6 +1,6 @@
 # Authentication Setup
 
-This application optionally supports Azure AD OAuth2 authentication using Passport.js.
+This application optionally supports Azure AD OAuth2 authentication using Microsoft Authentication Library (MSAL) for Node.js with cookie-based session management.
 
 ## Enabling Authentication
 
@@ -18,7 +18,8 @@ When authentication is disabled:
 When authentication is enabled:
 - Users must sign in with Azure AD to access the application
 - Login/logout links appear in the navigation
-- User sessions are managed with secure cookies
+- User sessions are managed with secure, httpOnly cookies
+- Authentication state is stored in cookies (not server-side sessions)
 
 ## Azure AD Application Registration
 
@@ -41,7 +42,7 @@ When authentication is enabled:
    - Add platform "Web"
    - Add redirect URI: `http://localhost:3000/auth/callback` (development)
    - Add redirect URI: `https://your-domain.com/auth/callback` (production)
-   - Enable "ID tokens" under "Implicit grant and hybrid flows"
+   - Under "Implicit grant and hybrid flows", enable "ID tokens"
 
 ## Environment Configuration
 
@@ -62,7 +63,10 @@ AZURE_CLIENT_SECRET=your-client-secret-from-azure-ad
 AZURE_REDIRECT_URL=http://localhost:3000/auth/callback
 ```
 
-**Note:** If `AUTH_METHOD` is not set to `oauth2`, all Azure AD configuration variables are ignored and authentication is disabled.
+**Important Notes:**
+- `SESSION_SECRET` is used for cookie signing and CSRF state validation
+- If `AUTH_METHOD` is not set to `oauth2`, all Azure AD configuration variables are ignored
+- Use strong, random values for `SESSION_SECRET` in production
 
 ## Authentication Routes
 
@@ -70,8 +74,8 @@ When `AUTH_METHOD=oauth2`, the following routes are available:
 
 - `/auth/login` - Login page
 - `/auth/login/azure` - Initiate Azure AD OAuth2 flow
-- `/auth/callback` - Azure AD callback endpoint
-- `/auth/logout` - Logout and end session
+- `/auth/callback` - Azure AD callback endpoint (GET)
+- `/auth/logout` - Logout and end session (also logs out of Azure AD)
 - `/auth/profile` - User profile page (protected)
 
 When authentication is disabled, these routes return 404.
@@ -91,57 +95,132 @@ router.get('/protected-route', ensureAuthenticated, function(req, res) {
 
 ## User Object
 
-After successful authentication, the user object contains:
+After successful authentication, the user object is available via `req.user` and contains:
 
 ```javascript
 {
-  id: 'user-oid-from-azure',
-  displayName: 'John Doe',
-  email: 'john.doe@company.com',
-  firstName: 'John',
-  lastName: 'Doe',
-  accessToken: 'azure-access-token',
-  refreshToken: 'azure-refresh-token'
+  homeAccountId: 'unique-account-id',
+  environment: 'login.windows.net',
+  tenantId: 'tenant-id',
+  username: 'john.doe@company.com',
+  localAccountId: 'object-id',
+  name: 'John Doe',
+  idTokenClaims: {
+    // Full ID token claims from Azure AD
+  }
 }
 ```
+
+Additionally, `req.accessToken` contains the OAuth2 access token for making API calls.
 
 ## Template Variables
 
 All templates have access to:
-- `user` - Current user object (if authenticated)
+- `user` - Current user account object (if authenticated)
 - `isAuthenticated` - Boolean indicating if user is logged in
+- `authEnabled` - Boolean indicating if authentication is enabled
+
+## How Cookie-Based Auth Works
+
+This implementation uses MSAL for token exchange and stores authentication state in cookies:
+
+1. **Login Flow:**
+   - User clicks login and is redirected to Azure AD
+   - Azure AD authenticates the user and redirects back with an authorization code
+   - Server exchanges the code for tokens using MSAL
+   - User account and tokens are stored in a signed, httpOnly cookie
+   - Cookie expires after 24 hours or when tokens expire
+
+2. **Authentication Check:**
+   - On each request, the `ensureAuthenticated` middleware checks for the auth cookie
+   - Cookie data is validated and parsed
+   - If valid and not expired, `req.user` is populated
+   - If invalid or expired, user is redirected to login
+
+3. **Logout:**
+   - Auth cookie is cleared
+   - User is redirected to Azure AD logout endpoint
+   - Azure AD clears its session and redirects back to login page
 
 ## Security Considerations
 
-1. **Session Secret:** Use a strong, unique session secret in production
-2. **HTTPS:** Always use HTTPS in production for OAuth2 flows
-3. **Cookie Security:** Secure cookies are automatically enabled in production
-4. **Redirect URI Validation:** Azure AD validates redirect URIs, so ensure they match exactly
+1. **Cookie Security:**
+   - Cookies are httpOnly (not accessible via JavaScript)
+   - Cookies are signed using SESSION_SECRET
+   - Secure flag is automatically enabled in production (HTTPS only)
+   - SameSite=lax provides CSRF protection
+
+2. **Session Secret:**
+   - Use a strong, unique session secret in production
+   - Rotate session secrets periodically
+
+3. **HTTPS:**
+   - Always use HTTPS in production for OAuth2 flows
+   - Cookies with secure flag only work over HTTPS
+
+4. **Token Storage:**
+   - Access tokens are stored in cookies (base64 encoded)
+   - Tokens are only accessible server-side
+   - Tokens expire and are validated on each request
+
+5. **CSRF Protection:**
+   - State parameter is validated during OAuth2 callback
+   - State is stored in session and must match callback state
 
 ## Development vs Production
 
 ### Development
 - Uses HTTP for redirect URIs
-- Session cookies are not secure
-- Detailed error logging
+- Cookies are not secure (no HTTPS required)
+- Detailed error logging with MSAL debug info
+- Cookie parsing is more permissive
 
 ### Production
 - Requires HTTPS for redirect URIs
-- Secure session cookies
-- Minimal error logging
+- Secure cookies (HTTPS only)
+- Minimal error logging (no PII)
+- Set `NODE_ENV=production` in environment
 
 ## Troubleshooting
 
 1. **"AADSTS50011: The redirect URI specified in the request does not match"**
    - Ensure redirect URI in Azure AD matches exactly with `AZURE_REDIRECT_URL`
+   - Check for trailing slashes and protocol (http vs https)
 
 2. **"Invalid client secret"**
    - Regenerate client secret in Azure AD and update `.env` file
+   - Ensure there are no extra spaces in the secret value
 
-3. **"User not authenticated"**
-   - Check if session middleware is properly configured
-   - Verify session secret is set
+3. **"State mismatch" or "State validation failed"**
+   - Clear browser cookies and try again
+   - Ensure `SESSION_SECRET` is set in your `.env` file
+   - Check that cookies are enabled in your browser
+   - Verify session middleware is configured before auth routes
 
-4. **"Cannot POST /auth/callback"**
-   - Ensure callback route is configured for POST method
-   - Check if Express URL encoded middleware is enabled
+4. **"Token exchange failed"**
+   - Check MSAL logs in server console for detailed error
+   - Verify all Azure AD configuration values are correct
+   - Ensure authorization code is being received in callback
+
+5. **"User not authenticated" or redirect loops**
+   - Check if auth cookie is being set (browser dev tools > Application > Cookies)
+   - Verify cookie domain and path are correct
+   - Ensure `cookieParser` middleware is configured before auth routes
+   - Check that token has not expired
+
+6. **Cookie not persisting**
+   - Verify `SESSION_SECRET` is set
+   - Check cookie settings in browser (httpOnly, secure, sameSite)
+   - In production, ensure HTTPS is being used
+   - Clear all cookies and restart browser
+
+## Migration from Passport.js
+
+If you're upgrading from the previous Passport.js implementation:
+
+1. **Dependencies:** `passport` and `passport-azure-ad` have been removed
+2. **MSAL:** Now using `@azure/msal-node` for OAuth2
+3. **Session Storage:** User data stored in cookies instead of server-side sessions
+4. **Middleware:** Same `ensureAuthenticated` middleware works with cookies
+5. **User Object:** Structure is slightly different (uses MSAL account object)
+6. **No Breaking Changes:** All routes and environment variables remain the same
