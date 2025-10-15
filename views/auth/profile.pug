@@ -37,9 +37,20 @@ block content
                         tr
                           td.fw-bold Last Name:
                           td= user.lastName
-                      tr
-                        td.fw-bold User ID:
-                        td= user.id
+
+            .row.mt-4
+              .col-12
+                h5.mb-3 Group Memberships
+                .alert.alert-info
+                  if user.roles && user.roles.length > 0
+                    p.mb-2
+                      strong Groups (#{user.roles.length}):
+                    ul.mb-0
+                      each role in user.roles
+                        li
+                          code= role
+                  else
+                    p.mb-0 No groups assigned
 
             .row.mt-4
               .col-12

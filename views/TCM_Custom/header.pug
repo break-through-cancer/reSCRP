@@ -11,6 +11,30 @@ nav.navbar.navbar-expand.navbar-light.bg-white.topbar.mb-4.static-top.shadow
       h1.h3.mb-0.text-gray-800
         | T Cell Map
   ul.navbar-nav.ml-auto
+    // User dropdown menu combining profile and auth
+    if authEnabled
+      if isAuthenticated
+        li.nav-item.dropdown.no-arrow
+          a#userDropdown.nav-link.dropdown-toggle(href='#',role='button',data-toggle='dropdown',aria-haspopup='true',aria-expanded='false')
+            i.fas.fa-user-circle.fa-fw.mr-1
+            span.d-none.d-lg-inline.text-gray-600.small #{user.name || user.username || 'User'}
+          .dropdown-menu.dropdown-menu-right.shadow.animated--grow-in(aria-labelledby='userDropdown')
+            a.dropdown-item(href='/auth/profile')
+              i.fas.fa-user.fa-sm.fa-fw.mr-2.text-gray-400
+              | Profile
+            .dropdown-divider
+            a.dropdown-item(href='/auth/logout')
+              i.fas.fa-sign-out-alt.fa-sm.fa-fw.mr-2.text-gray-400
+              | Sign Out
+      else
+        li.nav-item.dropdown.no-arrow
+          a#menuDropdown.nav-link.dropdown-toggle(href='#',role='button',data-toggle='dropdown',aria-haspopup='true',aria-expanded='false')
+            i.fas.fa-bars.fa-fw.mr-1
+            span.d-none.d-lg-inline.text-gray-600.small Menu
+          .dropdown-menu.dropdown-menu-right.shadow.animated--grow-in(aria-labelledby='menuDropdown')
+            a.dropdown-item(href='/auth/login')
+              i.fas.fa-sign-in-alt.fa-sm.fa-fw.mr-2.text-gray-400
+              | Sign In
     li.nav-item.dropdown.no-arrow.mx-1
       a#alertsDropdown.nav-link.dropdown-toggle(href='#',role='button',data-toggle='dropdown',aria-haspopup='true',aria-expanded='false')
         i.fas.fa-bell.fa-fw

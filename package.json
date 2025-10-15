@@ -14,6 +14,7 @@
     "r-shell": "docker compose -f docker-compose-r.yml run --rm r-processor /bin/bash"
   },
   "dependencies": {
+    "@azure/msal-node": "^3.8.0",
     "@ebi-gene-expression-group/anatomogram": "^2.4.0",
     "cookie-parser": "~1.4.4",
     "csv-writer": "^1.6.0",
@@ -29,8 +30,6 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "node-esapi": "^0.0.1",
-    "passport": "^0.7.0",
-    "passport-azure-ad": "^4.3.5",
     "pug": "^3.0.2",
     "r-script": "^0.0.4",
     "tmp": "^0.2.1"
