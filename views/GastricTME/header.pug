@@ -11,6 +11,10 @@ nav.navbar.navbar-expand.navbar-light.bg-white.topbar.mb-4.static-top.shadow
       h1.h3.mb-0.text-gray-800
         | Gastric TME
   ul.navbar-nav.ml-auto
+    // Documentation link
+    li.nav-item.no-arrow
+      a.nav-link(href='https://break-through-cancer.github.io/reSCRP/', target='_blank', title='Documentation')
+        i.fas.fa-book(style='font-size: 1.5rem;', aria-label='Documentation')
     // User dropdown menu combining profile and auth
     if authEnabled
       if isAuthenticated
@@ -29,8 +33,8 @@ nav.navbar.navbar-expand.navbar-light.bg-white.topbar.mb-4.static-top.shadow
       else
         li.nav-item.dropdown.no-arrow
           a#menuDropdown.nav-link.dropdown-toggle(href='#',role='button',data-toggle='dropdown',aria-haspopup='true',aria-expanded='false')
-            i.fas.fa-bars.fa-fw.mr-1
-            span.d-none.d-lg-inline.text-gray-600.small Menu
+            i.fas.fa-bars(style='font-size: 1.5rem;')
+            span.d-none.d-lg-inline.text-gray-600.small.ml-1 Menu
           .dropdown-menu.dropdown-menu-right.shadow.animated--grow-in(aria-labelledby='menuDropdown')
             a.dropdown-item(href='/auth/login')
               i.fas.fa-sign-in-alt.fa-sm.fa-fw.mr-2.text-gray-400
