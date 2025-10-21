@@ -15,7 +15,8 @@ services:
         - action: rebuild
           path: package.json
     ports:
-      - ${APP_PORT}:3000
+#       - ${APP_PORT}:3000
+      - 3001:3000
     volumes:
       - ./public/DataDownload:/scrp/public/DataDownload
     environment:
@@ -42,7 +43,7 @@ services:
     ports:
       - 3307:3306
     volumes:
-      - ./data/TCM:/data/TCM
+      - ./data:/data
       - ./data/db:/var/lib/mysql:Z
       - ./seed.sql:/docker-entrypoint-initdb.d/seed.sql
     environment:
