@@ -90,6 +90,24 @@ const study_modules = [
       description: '&nbsp;&nbsp;'
     }
   },
+  {
+    module: 'ovmrd',
+    description: '',
+    counts: {
+      cells: 0,
+      patients: 0,
+      samples: 0,
+      organs: 0,
+      cancers: 0,
+    },
+    link: {
+      css_class:'red',
+      icon: 'bi-activity',
+      title: '>Ovarian MRD',
+      link: '/OvMRD',
+      description: '&nbsp;&nbsp;',
+    }
+  },
 ];
 
 module.exports = study_modules;
