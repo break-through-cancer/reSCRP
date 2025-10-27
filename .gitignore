@@ -14,6 +14,10 @@
 /public/DataDownload/*.rds
 /Rplots.pdf
 
+# R files
+.RData
+.Rhistory
+
 # System files
 /**/.DS_Store
 /.DS_Store
