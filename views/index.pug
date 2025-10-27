@@ -84,16 +84,18 @@ block content
           h2 Studies
           p
             | Web portal for each study
-        .row
-          each item in links
-            .col-lg-4.col-md-6
-              a(href=item.link, style='text-decoration: none; color: inherit;')
-                div(class=['icon-box', item.css_class])
-                  .icon
-                    i(class="bi #{item.icon}")
-                  h4.title #{item.title}
-                  p.description
-                    | !{item.description}
+      .row
+        each item in links
+          - const isActive = (req && (req.path === item.link || req.path.startsWith(item.link)));
+          .col-lg-4.col-md-6
+            a(href=item.link, style='text-decoration: none; color: inherit;')
+              div(class=['icon-box', item.css_class, isActive ? 'active' : ''])
+                .icon
+                  i(class="bi #{item.icon}")
+                h4.title #{item.title}
+                p.description
+                  | !{item.description}
+
             
     // End Services Section
     .container.py-4

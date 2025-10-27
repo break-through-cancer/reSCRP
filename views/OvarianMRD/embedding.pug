@@ -1,0 +1,81 @@
+extends layout
+
+block content
+  #wrapper
+    // Sidebar
+    include sidebar.pug
+
+    // Content Wrapper
+    #content-wrapper.d-flex.flex-column
+      #content
+        include header.pug
+        // Begin Page Content
+        .container-fluid
+          // Page Heading
+          .d-sm-flex.align-items-center.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800 Select cell compartment:
+
+          form#selection
+            label(for='dataset-select') Cell type:
+            select#dataset-select(name='datasetoption')
+              option(value='') --Please choose a cell type--
+              option(value='CD4T') CD4+ T cells
+              option(value='CD8T') CD8+ T cells
+              option(value='BPlasma') B/Plasma cells
+              option(value='Myeloid') Myeloid cells
+              option(value='NK') NK cells
+              option(value='TNK') TNK cells
+
+            label(for='sample-select', style="margin-left:10px;") Sample ID:
+            select#sample-select(name='sampleoption')
+
+            label(for='cellstatus-select', style="margin-left:10px;") Cell status:
+            select#cellstatus-select(name='cellstatusoption')
+
+            input#submitbutton.SubmitButton(
+              type="submit",
+              name="SUBMITBUTTON",
+              value="Submit",
+              style="margin-left:10px;display:none;"
+            )
+
+          hr
+
+          // Content Row
+          .row
+            // Left UMAP: Cell Type
+            .col-xl-6.col-lg-7
+              .card.shadow.mb-4
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Cell Type
+                .card-body#imgCellType(style="height: 600px;")
+                  .lds-dual-ring.hidden.overlay#loader1
+
+            // Right UMAP: Cell Status
+            .col-xl-6.col-lg-7
+              .card.shadow.mb-4
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Cell Status
+                .card-body#imgCellStatus(style="height: 600px;")
+                  .lds-dual-ring.hidden.overlay#loader2
+
+          .row
+            // Summary chart or extra UMAP
+            .col-xl-6.col-lg-5
+              .card.shadow.mb-4
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Sample View
+                .card-body#imgSampleView(style="height: 600px;")
+                  .lds-dual-ring.hidden.overlay#loader3
+
+          // Module-specific JS
+          script(src='/OvarianMRD/javascripts/embedding_query.js')
+
+        include footer.pug
+        a.scroll-to-top.rounded(onClick="document.documentElement.scrollIntoView({ behavior: 'smooth' });")
+          i.fas.fa-angle-up
+
+  // Global assets
+  script(src='/assets/vendor/bootstrap2/js/bootstrap.bundle.min.js')
+  script(src='/assets/vendor/jquery-easing/jquery.easing.min.js')
+  script(src='/OvarianMRD/javascripts/sb-admin-2.min.js')

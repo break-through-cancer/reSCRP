@@ -34,7 +34,7 @@ router.get("/", function (req, res, next) {
   const links = study_modules
     .filter(k => enabled_modules.includes(k.module))
     .map(k => k.link);
-  res.render("index", { title: "SCRP", counts: total_count, links: links});
+  res.render("index", { title: "SCRP", counts: total_count, links: links, req: req});
 });
 
 module.exports = router;

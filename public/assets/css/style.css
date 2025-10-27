@@ -1317,3 +1317,39 @@ section {
     text-align: center;
   }
 }
+
+/*--------------------------------------------------------------
+# Module Card Hover/Active Colors
+--------------------------------------------------------------*/
+
+.services .icon-box {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Lift and glow when hovered */
+.services .icon-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+/* Color highlights by theme */
+.services .icon-box.orange:hover { background-color: #ffa94d; color: #fff; }
+.services .icon-box.red:hover    { background-color: #ff6b6b; color: #fff; }
+.services .icon-box.green:hover  { background-color: #51cf66; color: #fff; }
+.services .icon-box.blue:hover   { background-color: #339af0; color: #fff; }
+.services .icon-box.purple:hover { background-color: #845ef7; color: #fff; }
+
+/* Optional: click press effect */
+.services .icon-box:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.services .icon-box.active {
+  border: 3px solid rgba(0,0,0,0.3);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  transform: translateY(-3px);
+}
+.services .icon-box.red.active    { background-color: #ff6b6b; color: white; }
+.services .icon-box.orange.active { background-color: #ffa94d; color: white; }

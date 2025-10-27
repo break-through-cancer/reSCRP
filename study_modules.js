@@ -91,20 +91,20 @@ const study_modules = [
     }
   },
   {
-    module: 'ovmrd',
+    module: 'ovarian_mrd',
     description: '',
     counts: {
-      cells: 0,
-      patients: 0,
-      samples: 0,
-      organs: 0,
-      cancers: 0,
+      cells: 88701,
+      patients: 1,
+      samples: 1,
+      organs: 1,
+      cancers: 1,
     },
     link: {
       css_class:'red',
       icon: 'bi-activity',
       title: '>Ovarian MRD',
-      link: '/OvMRD',
+      link: '/OvarianMRD',
       description: '&nbsp;&nbsp;',
     }
   },

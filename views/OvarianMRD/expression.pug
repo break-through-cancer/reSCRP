@@ -1,0 +1,83 @@
+extends layout
+
+block content
+  #wrapper
+    // Sidebar
+    include sidebar.pug
+
+    // Content Wrapper
+    #content-wrapper.d-flex.flex-column
+      // Main Content
+      #content
+        // Topbar
+        include header.pug
+
+        // Begin Page Content
+        .container-fluid
+          // Page Heading
+          .d-sm-flex.align-items-center.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800 Select cell compartment and markers:
+
+          form#selection
+            label(for='dataset-select') Cell type:
+            select#dataset-select(name='datasetoption')
+              option(value='') --Please choose a cell type--
+              option(value='CD4T') CD4+ T cells
+              option(value='CD8T') CD8+ T cells
+              option(value='BPlasma') B/Plasma cells
+              option(value='Myeloid') Myeloid cells
+              option(value='NK') NK cells
+              option(value='TNK') TNK cells
+
+            label(for='sample-select', style="margin-left:10px;") Sample ID:
+            select#sample-select(name='sampleoption')
+
+            label(for='cellstatus-select', style="margin-left:10px;") Cell status:
+            select#cellstatus-select(name='cellstatusoption')
+
+            br
+            label Marker(s) input:
+            textarea#markers-input(
+              rows="1",
+              cols="10",
+              placeholder="Enter one or more gene symbols separated by commas",
+              style="margin-left:10px;"
+            )
+
+            input#submitbutton.SubmitButton(
+              type="submit",
+              name="SUBMITBUTTON",
+              value="Submit",
+              style="margin-left:10px;"
+            )
+
+          hr
+
+          // Content Row
+          .row
+            // Expression Distribution Plot
+            .col-xl-6.col-lg-7
+              .card.shadow.mb-4
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Expression Distribution (Violin / Feature)
+                .card-body#imgBubblePlot(style="height: 600px;")
+                  .lds-dual-ring.hidden.overlay#loader1
+
+            // Correlation Heatmap
+            .col-xl-6.col-lg-7
+              .card.shadow.mb-4
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Spearman Correlation of Marker Expression
+                .card-body#imgHeatmapPlot(style="height: 600px;")
+                  .lds-dual-ring.hidden.overlay#loader2
+
+        include footer.pug
+
+        a.scroll-to-top.rounded(onClick="document.documentElement.scrollIntoView({ behavior: 'smooth' });")
+          i.fas.fa-angle-up
+
+  // Scripts
+  script(src='/OvarianMRD/javascripts/expression_query.js')
+  script(src='/assets/vendor/bootstrap2/js/bootstrap.bundle.min.js')
+  script(src='/assets/vendor/jquery-easing/jquery.easing.min.js')
+  script(src='/OvarianMRD/javascripts/sb-admin-2.min.js')

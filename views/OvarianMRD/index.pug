@@ -1,0 +1,109 @@
+extends layout
+
+block content
+  #wrapper
+    // Sidebar
+    include sidebar.pug
+
+    // Content Wrapper
+    #content-wrapper.d-flex.flex-column
+      // Main Content
+      #content
+        include header.pug
+
+        // Begin Page Content
+        .container-fluid
+          // Page Heading
+          .d-sm-flex.align-items-center.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800 Overview
+
+          // ===== SUMMARY CARDS =====
+          .row
+            .col-xl-3.col-md-6.mb-4
+              .card.background-one.foreground-one.shadow.h-100.py-2
+                .card-body.noar
+                  .row.no-gutters.align-items-center
+                    .col.mr-2
+                      .text-xs.font-weight-bold.text-uppercase.mb-1 Total Cells:
+                      .h5.mb-0.font-weight-bold 88,701
+                    .col-auto
+                      i.fas.fa-circle.fa-2x.text-gray-300
+            .col-xl-3.col-md-6.mb-4
+              .card.background-two.foreground-one.shadow.h-100.py-2
+                .card-body.noar
+                  .row.no-gutters.align-items-center
+                    .col.mr-2
+                      .text-xs.font-weight-bold.text-uppercase.mb-1 Samples:
+                      .h5.mb-0.font-weight-bold 1
+                    .col-auto
+                      i.fas.fa-vial.fa-2x.text-gray-300
+            .col-xl-3.col-md-6.mb-4
+              .card.background-three.foreground-one.shadow.h-100.py-2
+                .card-body.noar
+                  .row.no-gutters.align-items-center
+                    .col.mr-2
+                      .text-xs.font-weight-bold.text-uppercase.mb-1 Patients:
+                      .h5.mb-0.font-weight-bold 1
+                    .col-auto
+                      i.fas.fa-hospital-user.fa-2x.text-gray-300
+            .col-xl-3.col-md-6.mb-4
+              .card.background-four.foreground-one.shadow.h-100.py-2
+                .card-body.noar
+                  .row.no-gutters.align-items-center
+                    .col.mr-2
+                      .text-xs.font-weight-bold.text-uppercase.mb-1 Cell Types:
+                      .h5.mb-0.font-weight-bold 5
+                    .col-auto
+                      i.fas.fa-dna.fa-2x.text-gray-300
+
+          // ===== ROW 1: NEW TIMECOURSE ANALYSIS =====
+          .row.mt-5
+            .col-12.text-center
+              h3.text-gray-800.mt-4 Temporal Cell Composition Analysis
+
+          .row
+            .col-xl-6.col-lg-6.mb-4
+              .card.shadow.h-100
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Composition Across Treatment (Stacked Bar)
+                .card-body
+                  canvas#cellcompositionBar(style="width:100%; height:400px")
+
+            .col-xl-6.col-lg-6.mb-4
+              .card.shadow.h-100
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Temporal Dynamics (% Composition)
+                .card-body
+                  canvas#cellcompositionLine(style="width:100%; height:400px")
+
+          // ===== ROW 2: PIE GRID =====
+          .row
+            .col-12.text-center
+              .card.shadow.h-100
+                .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                  h6.m-0.font-weight-bold Cell Type Distribution per Timepoint
+                .card-body
+                  #cellcompositionPieGrid(style="margin: 30px auto; width:95%;")
+                  // Shared Legend
+                  .mt-3
+                    span(style="color:#4e79a7;font-weight:bold;") ■ TNK  
+                    span(style="color:#f28e2b;font-weight:bold;") ■ Myeloid  
+                    span(style="color:#59a14f;font-weight:bold;") ■ B  
+                    span(style="color:#e15759;font-weight:bold;") ■ Epithelial  
+                    span(style="color:#edc948;font-weight:bold;") ■ Stromal
+
+        // ===== FOOTER =====
+        include footer.pug
+        a.scroll-to-top.rounded(onClick="document.documentElement.scrollIntoView({ behavior: 'smooth' });")
+          i.fas.fa-angle-up
+
+  // ===== CORE SCRIPTS =====
+  script(src='/assets/vendor/bootstrap2/js/bootstrap.bundle.min.js')
+  script(src='/assets/vendor/jquery-easing/jquery.easing.min.js')
+  script(src='/assets/vendor/chart.js/Chart.min.js')
+  script(src='/OvarianMRD/javascripts/sb-admin-2.js')
+
+  // ===== NEW CHART SCRIPTS =====
+  script(src='/OvarianMRD/javascripts/chart/chart-cellcomposition-bar.js')
+  script(src='/OvarianMRD/javascripts/chart/chart-cellcomposition-line.js')
+  script(src='/OvarianMRD/javascripts/chart/chart-cellcomposition-pie.js')
