@@ -1,9 +1,9 @@
 FROM ubuntu:22.04
 
-# Prevent interactive prompts during package installation
+
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install locales and generate en_US.UTF-8
+
 RUN apt-get update && \
     apt-get install -y locales && \
     locale-gen en_US.UTF-8 && \

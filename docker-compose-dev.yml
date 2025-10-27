@@ -1,9 +1,15 @@
 services:
   scrp:
     build:
-      context: . 
+      context: .
       dockerfile: Dockerfile.ubuntu
+
+    # ✅ Load environment variables directly from your .env file
+    env_file:
+      - .env
+
     command: npm run start-with-hot-reload
+
     develop:
       watch:
         - action: sync
@@ -14,34 +20,27 @@ services:
             - data/
         - action: rebuild
           path: package.json
+
     ports:
-#       - ${APP_PORT}:3000
-      - 3001:3000
+      - "3001:3000"
+
     volumes:
       - ./public/DataDownload:/scrp/public/DataDownload
+
+    # ✅ You can remove this whole section if .env is correct,
+    # but if you prefer to keep it explicit, it’s still fine.
     environment:
-      MODULES: ${MODULES}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_DATABASE: ${DB_DATABASE}
-      DB_CONN_LIMIT: ${DB_CONN_LIMIT}
-      DB_HOST_TCM: ${DB_HOST_TCM}
-      DB_PORT_TCM: ${DB_PORT_TCM}
-      DB_USER_TCM: ${DB_USER_TCM}
-      DB_PASSWORD_TCM: ${DB_PASSWORD_TCM}
-      DB_DATABASE_TCM: ${DB_DATABASE_TCM}
       SSL_KEY: ${SSL_KEY}
       SSL_CA: ${SSL_CERT}
       SSL_CERT: ${SSL_CA}
       SSL_PASSPHRASE: ${SSL_PASSPHRASE}
+
   db:
     image: mariadb:latest
     container_name: scrp-mariadb
     restart: unless-stopped
     ports:
-      - 3307:3306
+      - "3307:3306"
     volumes:
       - ./data:/data
       - ./data/db:/var/lib/mysql:Z
@@ -49,3 +48,4 @@ services:
     environment:
       MARIADB_DATABASE: tcm
       MARIADB_ROOT_PASSWORD: test
+
