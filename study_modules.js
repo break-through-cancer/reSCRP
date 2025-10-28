@@ -11,7 +11,7 @@ const study_modules = [
       cancers: 16,
     },
     link: {
-      css_class:'orange',
+      css_class: 'orange',
       icon: 'bi-cash-stack',
       title: '> T cell map',
       link: '/TCM',
@@ -29,7 +29,7 @@ const study_modules = [
       cancers: 0,
     },
     link: {
-      css_class:'purple',
+      css_class: 'purple',
       icon: 'bi-calendar4-week',
       title: '>Gastric cancer',
       link: '/GastricCancer',
@@ -47,7 +47,7 @@ const study_modules = [
       cancers: 0,
     },
     link: {
-      css_class:'green',
+      css_class: 'green',
       icon: 'bi-chat-text',
       title: '>Gastric TME',
       link: '/GastricTME',
@@ -65,7 +65,7 @@ const study_modules = [
       cancers: 0,
     },
     link: {
-      css_class:'blue',
+      css_class: 'blue',
       icon: 'bi-folder2',
       title: '>B Cell Landscape in Lung Cancer',
       link: '/BcellLC',
@@ -83,7 +83,7 @@ const study_modules = [
       cancers: 1,
     },
     link: {
-      css_class:'green',
+      css_class: 'green',
       icon: 'bi-cash-stack',
       title: '> CUSTOM: T cell map',
       link: '/TCM_Custom',
@@ -91,20 +91,20 @@ const study_modules = [
     }
   },
   {
-    module: 'ovmrd',
+    module: 'ovarian_mrd',
     description: '',
     counts: {
-      cells: 0,
-      patients: 0,
-      samples: 0,
-      organs: 0,
-      cancers: 0,
+      cells: 88701,
+      patients: 1,
+      samples: 8,
+      organs: 1,
+      cancers: 1,
     },
     link: {
-      css_class:'red',
+      css_class: 'red',
       icon: 'bi-activity',
       title: '>Ovarian MRD',
-      link: '/OvMRD',
+      link: '/OvarianMRD',
       description: '&nbsp;&nbsp;',
     }
   },

@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   scrp:
     image: ghcr.io/break-through-cancer/rescrp:latest
@@ -23,6 +25,7 @@ services:
       SSL_CA: ${SSL_CERT}
       SSL_CERT: ${SSL_CA}
       SSL_PASSPHRASE: ${SSL_PASSPHRASE}
+
   db:
     image: mariadb:latest
     container_name: scrp-mariadb

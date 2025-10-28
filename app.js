@@ -42,6 +42,7 @@ var TCMCustomRouter = require("./routes/TCM_Custom/index");
 var GastricCancerRouter = require("./routes/GastricCancer/index");
 var GastricTMERouter = require("./routes/GastricTME/index");
 var BcellLCRouter = require("./routes/BcellLC/index");
+var OvarianMRDRouter = require("./routes/OvarianMRD/index");
 
 require("events").EventEmitter.defaultMaxListeners = 200;
 
@@ -137,7 +138,9 @@ const _routers = {
   'gastric_cancer': GastricCancerRouter,
   'gastric_tme': GastricTMERouter,
   'bcell_lc': BcellLCRouter,
+  'ovarian_mrd': OvarianMRDRouter,
 };
+console.log("Routers available:", Object.keys(_routers));
 
 // Register authentication router (only if enabled)
 if (process.env.AUTH_METHOD === 'oauth2') {
