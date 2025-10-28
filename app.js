@@ -38,7 +38,6 @@ if (process.env.AUTH_METHOD === 'oauth2') {
 var indexRouter = require("./routes/index");
 var authRouter = require("./routes/auth");
 var TCMRouter = require("./routes/TCM/index");
-var TCMCustomRouter = require("./routes/TCM_Custom/index");
 var GastricCancerRouter = require("./routes/GastricCancer/index");
 var GastricTMERouter = require("./routes/GastricTME/index");
 var BcellLCRouter = require("./routes/BcellLC/index");
@@ -90,7 +89,7 @@ if (process.env.AUTH_METHOD === 'oauth2' && authConfig) {
   console.log('✓ Session management enabled (for CSRF protection)');
 
   // Middleware to check session for authenticated user and make available to routes
-  app.use(function(req, res, next) {
+  app.use(function (req, res, next) {
     // Check if user exists in session
     if (req.session && req.session.user) {
       req.user = req.session.user.account;
@@ -121,7 +120,7 @@ if (process.env.AUTH_METHOD === 'oauth2' && authConfig) {
   console.log('✓ MSAL authentication middleware registered');
 } else {
   // No authentication - make variables available but false
-  app.use(function(req, res, next) {
+  app.use(function (req, res, next) {
     req.isAuthenticated = () => false;
     res.locals.user = null;
     res.locals.isAuthenticated = false;
@@ -134,7 +133,6 @@ if (process.env.AUTH_METHOD === 'oauth2' && authConfig) {
 const enabled_modules = process.env.MODULES.split(',');
 const _routers = {
   'tcm': TCMRouter,
-  'tcm_custom': TCMCustomRouter,
   'gastric_cancer': GastricCancerRouter,
   'gastric_tme': GastricTMERouter,
   'bcell_lc': BcellLCRouter,
@@ -178,9 +176,9 @@ app.use(function (err, req, res, next) {
 });
 
 app.use(hsts({
-    maxAge: 31536000,        // Must be at least 1 year to be approved
-    includeSubDomains: true, // Must be enabled to be approved
-    preload: true
+  maxAge: 31536000,        // Must be at least 1 year to be approved
+  includeSubDomains: true, // Must be enabled to be approved
+  preload: true
 }));
 
 module.exports = app;

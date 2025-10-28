@@ -73,24 +73,6 @@ const study_modules = [
     }
   },
   {
-    module: 'tcm_custom',
-    description: '',
-    counts: {
-      cells: 5555,
-      patients: 70,
-      samples: 11,
-      organs: 3,
-      cancers: 1,
-    },
-    link: {
-      css_class: 'green',
-      icon: 'bi-cash-stack',
-      title: '> CUSTOM: T cell map',
-      link: '/TCM_Custom',
-      description: '&nbsp;&nbsp;'
-    }
-  },
-  {
     module: 'ovarian_mrd',
     description: '',
     counts: {
