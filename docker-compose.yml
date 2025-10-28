@@ -2,15 +2,11 @@ version: "3.9"
 
 services:
   scrp:
-    build:
-      context: .
-      dockerfile: Dockerfile.ubuntu
+    image: ghcr.io/break-through-cancer/rescrp:latest
     command: npm run start-with-hot-reload
     ports:
       - ${APP_PORT}:3000
     volumes:
-      - .:/scrp
-      - /scrp/node_modules
       - ./public/DataDownload:/scrp/public/DataDownload
     environment:
       MODULES: ${MODULES}
@@ -19,7 +15,6 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DATABASE: ${DB_DATABASE}
-      DB_DATABASE_OVMRD: ovmrd        # ✅ Added for OvarianMRD module
       DB_CONN_LIMIT: ${DB_CONN_LIMIT}
       DB_HOST_TCM: ${DB_HOST_TCM}
       DB_PORT_TCM: ${DB_PORT_TCM}
@@ -44,4 +39,3 @@ services:
     environment:
       MARIADB_DATABASE: tcm
       MARIADB_ROOT_PASSWORD: test
-
