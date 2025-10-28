@@ -3,13 +3,15 @@ var $conf = require("../../conf/OvarianMRD/conf");
 var $sql = require("./sqlMapping");
 var R = require("r-script");
 
-// Log database configuration (without password)
-console.log("🔗 OvarianMRD Database Configuration:");
-console.log("   Host:", $conf.mysql.host);
-console.log("   User:", $conf.mysql.user);
-console.log("   Database:", $conf.mysql.database);
-console.log("   Port:", $conf.mysql.port);
-console.log("   Connection Limit:", $conf.mysql.connectionLimit);
+// Log database configuration (without password) - Debug only
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+  console.log("🔗 OvarianMRD Database Configuration:");
+  console.log("   Host:", $conf.mysql.host);
+  console.log("   User:", $conf.mysql.user);
+  console.log("   Database:", $conf.mysql.database);
+  console.log("   Port:", $conf.mysql.port);
+  console.log("   Connection Limit:", $conf.mysql.connectionLimit);
+}
 
 // Create connection pool
 var pool = mysql.createPool($conf.mysql);
@@ -17,19 +19,27 @@ var pool = mysql.createPool($conf.mysql);
 // Test database connection on startup
 pool.getConnection(function (err, connection) {
   if (err) {
+    // Always log errors
     console.error("❌ OvarianMRD Database connection FAILED:", err.message);
     console.error("   Error code:", err.code);
     console.error("   SQL State:", err.sqlState);
   } else {
-    console.log("✅ OvarianMRD Database connection pool established successfully");
-    connection.query("SELECT DATABASE() as db", function (err, result) {
-      if (err) {
-        console.error("❌ Database query test failed:", err.message);
-      } else {
-        console.log("   Connected to database:", result[0].db);
-      }
+    // Success message - production friendly
+    console.log("✅ OvarianMRD Database connected");
+
+    // Detailed info - debug only
+    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+      connection.query("SELECT DATABASE() as db", function (err, result) {
+        if (err) {
+          console.error("❌ Database query test failed:", err.message);
+        } else {
+          console.log("   Database name:", result[0].db);
+        }
+        connection.release();
+      });
+    } else {
       connection.release();
-    });
+    }
   }
 });
 
