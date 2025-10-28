@@ -8,7 +8,36 @@ var mysql = require("mysql2");
 var $conf = require("../../conf/GastricCancer/conf");
 var $sql = require("./sqlMapping");
 var R = require("r-script");
+
+// Log database configuration (without password)
+console.log("🔗 GastricCancer Database Configuration:");
+console.log("   Host:", $conf.mysql.host);
+console.log("   User:", $conf.mysql.user);
+console.log("   Database:", $conf.mysql.database);
+console.log("   Port:", $conf.mysql.port);
+console.log("   Connection Limit:", $conf.mysql.connectionLimit);
+
+// Create connection pool
 var pool = mysql.createPool($conf.mysql);
+
+// Test database connection on startup
+pool.getConnection(function (err, connection) {
+  if (err) {
+    console.error("❌ GastricCancer Database connection FAILED:", err.message);
+    console.error("   Error code:", err.code);
+    console.error("   SQL State:", err.sqlState);
+  } else {
+    console.log("✅ GastricCancer Database connection pool established successfully");
+    connection.query("SELECT DATABASE() as db", function (err, result) {
+      if (err) {
+        console.error("❌ Database query test failed:", err.message);
+      } else {
+        console.log("   Connected to database:", result[0].db);
+      }
+      connection.release();
+    });
+  }
+});
 
 var createCsvWriter = require("csv-writer").createObjectCsvWriter;
 var tmp = require("tmp");
