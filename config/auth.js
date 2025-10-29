@@ -2,7 +2,10 @@ const msal = require('@azure/msal-node');
 
 // Only initialize if authentication is enabled
 if (process.env.AUTH_METHOD !== 'oauth2') {
-  console.log('Auth config: Skipping MSAL initialization (AUTH_METHOD not set to oauth2)');
+  // Info message - hide during tests
+  if (process.env.NODE_ENV !== 'test') {
+    console.log('Auth config: Skipping MSAL initialization (AUTH_METHOD not set to oauth2)');
+  }
   module.exports = {
     msalInstance: null,
     ensureAuthenticated: (req, res, next) => next(), // No-op middleware
@@ -12,7 +15,10 @@ if (process.env.AUTH_METHOD !== 'oauth2') {
   return;
 }
 
-console.log('Auth config: Initializing MSAL with Azure AD...');
+// Info message - hide during tests
+if (process.env.NODE_ENV !== 'test') {
+  console.log('Auth config: Initializing MSAL with Azure AD...');
+}
 
 // Validate required environment variables
 const requiredVars = ['AZURE_TENANT_ID', 'AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET'];
@@ -53,7 +59,10 @@ const msalConfig = {
         if (containsPii) {
           return;
         }
-        console.log('[MSAL]', message);
+        // MSAL internal logging - development only
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[MSAL]', message);
+        }
       },
       piiLoggingEnabled: false,
       logLevel: msal.LogLevel.Info,
@@ -61,18 +70,28 @@ const msalConfig = {
   }
 };
 
-console.log('Auth config: MSAL Authority:', msalConfig.auth.authority);
+// Detailed config info - development only
+if (process.env.NODE_ENV === 'development') {
+  console.log('Auth config: MSAL Authority:', msalConfig.auth.authority);
+}
 
+// Success message - hide during tests
 if (missingVars.length === 0 && !placeholderValues.includes(process.env.AZURE_TENANT_ID)) {
-  console.log('Auth config: All required Azure AD variables are set');
+  if (process.env.NODE_ENV !== 'test') {
+    console.log('Auth config: All required Azure AD variables are set');
+  }
 }
 
 // Create MSAL instance
 let msalInstance;
 try {
   msalInstance = new msal.ConfidentialClientApplication(msalConfig);
-  console.log('Auth config: MSAL Confidential Client Application created successfully');
+  // Success message - hide during tests
+  if (process.env.NODE_ENV !== 'test') {
+    console.log('Auth config: MSAL Confidential Client Application created successfully');
+  }
 } catch (error) {
+  // Always log errors
   console.error('✗ Failed to create MSAL instance:', error.message);
   throw error;
 }
@@ -94,9 +113,13 @@ const getAuthCodeUrl = async (state, nonce) => {
 
   try {
     const authCodeUrl = await msalInstance.getAuthCodeUrl(authCodeUrlParameters);
-    console.log('Auth config: Generated auth code URL');
+    // Success message - hide during tests
+    if (process.env.NODE_ENV !== 'test') {
+      console.log('Auth config: Generated auth code URL');
+    }
     return authCodeUrl;
   } catch (error) {
+    // Always log errors
     console.error('✗ Failed to generate auth code URL:', error);
     throw error;
   }
@@ -113,9 +136,13 @@ const acquireTokenByCode = async (code, state) => {
 
   try {
     const response = await msalInstance.acquireTokenByCode(tokenRequest);
-    console.log('Auth config: Successfully acquired token by code');
+    // Success message - hide during tests
+    if (process.env.NODE_ENV !== 'test') {
+      console.log('Auth config: Successfully acquired token by code');
+    }
     return response;
   } catch (error) {
+    // Always log errors
     console.error('✗ Failed to acquire token by code:', error);
     throw error;
   }
