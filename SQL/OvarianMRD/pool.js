@@ -24,11 +24,13 @@ pool.getConnection(function (err, connection) {
     console.error("   Error code:", err.code);
     console.error("   SQL State:", err.sqlState);
   } else {
-    // Success message - production friendly
-    console.log("✅ OvarianMRD Database connected");
+    // Success message - hide during tests
+    if (process.env.NODE_ENV !== 'test') {
+      console.log("✅ OvarianMRD Database connected");
+    }
 
-    // Detailed info - debug only
-    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+    // Detailed info - development only
+    if (process.env.NODE_ENV === 'development') {
       connection.query("SELECT DATABASE() as db", function (err, result) {
         if (err) {
           console.error("❌ Database query test failed:", err.message);
