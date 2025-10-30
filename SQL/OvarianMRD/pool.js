@@ -86,6 +86,13 @@ const aColumns = [
 ];
 
 module.exports = {
+  // Cleanup function for tests to close the pool
+  cleanup: async function() {
+    if (pool) {
+      await pool.end();
+    }
+  },
+
   // -------------------------------------------------------------
   // Query distinct SampleID, CellType, and CellStatus
   // -------------------------------------------------------------

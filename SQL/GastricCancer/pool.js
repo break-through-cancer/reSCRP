@@ -92,6 +92,13 @@ const aColumns = [
 ];
 
 module.exports = {
+  // Cleanup function for tests to close the pool
+  cleanup: async function() {
+    if (pool) {
+      await pool.end();
+    }
+  },
+
   queryTissueAndCancer: function (req, res, next) {
     // console.log("query tissue and cancer type");
     pool.getConnection(function (err, connection) {
