@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   scrp:
     image: ghcr.io/break-through-cancer/rescrp:latest
