@@ -11,7 +11,10 @@
     "start-with-ssl": "node ./bin/www --with-ssl",
     "start-with-hot-reload": "nodemon -e '*' ./bin/www",
     "preprocess:ovarian": "./scripts/run_ovarian_preprocessing.sh",
-    "r-shell": "docker compose -f docker-compose-r.yml run --rm r-processor /bin/bash"
+    "r-shell": "docker compose -f docker-compose-r.yml run --rm r-processor /bin/bash",
+    "test": "node --test test/**/*.test.js",
+    "test:watch": "node --test --watch test/**/*.test.js",
+    "test:coverage": "node --test --experimental-test-coverage test/**/*.test.js"
   },
   "dependencies": {
     "@azure/msal-node": "^3.8.0",
