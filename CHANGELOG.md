@@ -7,9 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-10-30
+
 ### Added
 - Database connection logging for all modules (TCM, TCM_Custom, GastricCancer, GastricTME, BcellLC, OvMRD, OvarianMRD)
 - Startup connection verification with detailed error reporting
+- Test suite with Node.js native test runner
+  - Application health tests
+  - Database connection tests
+  - Route tests
+  - Security header tests
+  - Utility function tests
+- Shared test helpers module to reduce code duplication
+- Database pool cleanup methods for all modules to prevent test hanging
+
+### Fixed
+- OvarianMRD embedding page CellStatus dropdown showing undefined values
+- OvarianMRD embedding page Cell Status and Sample View plots not rendering
+- Test suite hanging due to unclosed database connections and pending promises
+- Optimized OvarianMRD queryCellType to use single SQL query instead of two
+
+### Changed
+- Refactored duplicate makeRequest function into shared test helpers
+- Removed non-functional Data Validation tests from test suite
 
 ## [0.1.0] - 2025-10-28
 
