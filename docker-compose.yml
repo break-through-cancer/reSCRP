@@ -5,26 +5,11 @@ services:
     image: ghcr.io/break-through-cancer/rescrp:latest
     command: npm run start-with-hot-reload
     ports:
-      - ${APP_PORT}:3000
+      - ${APP_PORT:-3000}:3000
     volumes:
       - ./public/DataDownload:/scrp/public/DataDownload
-    environment:
-      MODULES: ${MODULES}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_DATABASE: ${DB_DATABASE}
-      DB_CONN_LIMIT: ${DB_CONN_LIMIT}
-      DB_HOST_TCM: ${DB_HOST_TCM}
-      DB_PORT_TCM: ${DB_PORT_TCM}
-      DB_USER_TCM: ${DB_USER_TCM}
-      DB_PASSWORD_TCM: ${DB_PASSWORD_TCM}
-      DB_DATABASE_TCM: ${DB_DATABASE_TCM}
-      SSL_KEY: ${SSL_KEY}
-      SSL_CA: ${SSL_CERT}
-      SSL_CERT: ${SSL_CA}
-      SSL_PASSPHRASE: ${SSL_PASSPHRASE}
+    env_file:
+      - .env
 
   db:
     image: mariadb:latest
