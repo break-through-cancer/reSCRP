@@ -87,7 +87,7 @@ const aColumns = [
 
 module.exports = {
   // Cleanup function for tests to close the pool
-  cleanup: async function() {
+  cleanup: async function () {
     if (pool) {
       await pool.end();
     }
@@ -151,15 +151,32 @@ module.exports = {
         if (connection) connection.release();  // ✅ only release if it exists
         return;                                // ✅ safely exit without throwing
       }
-      var sqlString =
-        "SELECT DISTINCT CellType FROM " + req.query.dataset_id + "_meta";
+
+      // Single query to get both CellType and CellStatus
+      var sqlString = "SELECT CellType, CellStatus FROM " + req.query.dataset_id + "_meta";
       if (req.query.sample_id !== "") {
         sqlString += ' WHERE SampleID = "' + req.query.sample_id + '"';
       }
 
       connection.query(sqlString, function (err, result) {
         connection.release();
-        sendResultFuc(res, result);
+
+        if (err) {
+          console.log("Error fetching CellType and CellStatus:", err);
+          sendResultFuc(res, [[], []]);
+          return;
+        }
+
+        // Extract distinct CellTypes
+        const cellTypes = [...new Set(result.map(r => r.CellType))].map(ct => ({ CellType: ct }));
+
+        // Extract distinct CellStatuses and normalize
+        const cellStatuses = [...new Set(result.map(r => r.CellStatus))].map(cs => ({
+          value: cs,
+          label: cs
+        }));
+
+        sendResultFuc(res, [cellTypes, cellStatuses]);
       });
     });
   },
@@ -171,19 +188,19 @@ module.exports = {
         console.error("❌ Connection failed!", err);
         return res.status(500).send("Database connection failed.");
       }
-  
+
       // Ensure dataset_id is provided
       if (!req.query.dataset_id || req.query.dataset_id === "") {
         console.log("⚠️ No dataset_id specified!");
         connection.release();
         return res.status(400).send("Missing dataset_id parameter.");
       }
-  
+
       // Build the dynamic table name (e.g. CD8T_meta, CD4T_meta)
       const tableName = `${req.query.dataset_id}_meta`;
       let sqlString = `SELECT SampleID, CellType, CellStatus, UMAP_1, UMAP_2 FROM ${tableName}`;
       let conditions = [];
-  
+
       // Optional filters based on dropdowns
       if (req.query.sample_id && req.query.sample_id !== "") {
         conditions.push(`SampleID = "${req.query.sample_id}"`);
@@ -194,13 +211,13 @@ module.exports = {
       if (req.query.cellstatus_id && req.query.cellstatus_id !== "") {
         conditions.push(`CellStatus = "${req.query.cellstatus_id}"`);
       }
-  
+
       if (conditions.length > 0) {
         sqlString += " WHERE " + conditions.join(" AND ");
       }
-  
+
       console.log("🧠 Final SQL Query:\n" + sqlString);
-  
+
       // Run the query
       connection.query(sqlString, function (err, result) {
         connection.release();
@@ -208,7 +225,7 @@ module.exports = {
           console.error("❌ Query failed!", err);
           return res.status(500).send("Query execution failed.");
         }
-  
+
         // If no data, return a warning instead of blank plot
         if (!result || result.length === 0) {
           console.warn("⚠️ Query returned no results.");
@@ -217,17 +234,17 @@ module.exports = {
             data: [],
           });
         }
-  
+
         // Convert to JSON
         const json_result = result.map((v) => Object.assign({}, v));
-  
+
         // Write temporary CSV
         tmp.file(function _tempFileCreated(err, path, fd, cleanupCallback) {
           if (err) throw err;
-  
+
           console.log("📁 File created:", path);
           console.log("📄 File descriptor:", fd);
-  
+
           const csvWriter = createCsvWriter({
             path: path,
             header: [
@@ -238,10 +255,10 @@ module.exports = {
               { id: "UMAP_2", title: "UMAP_2" },
             ],
           });
-  
+
           csvWriter.writeRecords(json_result).then(() => {
             console.log("✅ Data written to:", path);
-  
+
             // Run R script to generate plots
             R("utils/OvarianMRD/rscripts/embedding.R")
               .data({ csvPathFile: path })
@@ -256,7 +273,7 @@ module.exports = {
       });
     });
   },
-  
+
 
   queryDEGs: function (req, res, next) {
     pool.getConnection(function (err, connection) {
@@ -409,7 +426,7 @@ module.exports = {
           res.status(500).json({ error: "Query failed", details: err.message });
           return;
         }
-        
+
         connection.release();
         var json_result = result.map((v) => Object.assign({}, v));
 
@@ -467,7 +484,7 @@ module.exports = {
             res.status(500).json({ error: "Query failed", details: err.message });
             return;
           }
-          
+
           var inItems = result.map((v) => v["Marker"]);
           var allItems = req.query.gene_id;
           diff = allItems.filter(function (x) {
@@ -523,7 +540,7 @@ module.exports = {
                 res.status(500).json({ error: "Query failed", details: err.message });
                 return;
               }
-              
+
               connection.release();
               var json_result = result.map((v) => Object.assign({}, v));
 

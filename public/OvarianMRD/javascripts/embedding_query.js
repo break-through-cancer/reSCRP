@@ -71,13 +71,13 @@ $(document).ready(function () {
       },
       dataType: "json",
       success: function (result) {
+        // result[0] → CellTypes
+        // result[1] → CellStatuses (normalized with 'value'/'label')
         $("#cellstatus-select").html('<option value="">All statuses</option>');
-        $.each(result, function (key, value) {
-          // ✅ FIX: also handle normalized format here
-          const val = value.CellStatus || value.value;
-          const label = value.CellStatus || value.label;
+        $.each(result[1], function (key, value) {
+          // ✅ FIX: use result[1] for CellStatuses and access 'value'/'label' properties
           $("#cellstatus-select").append(
-            '<option value="' + val + '">' + label + "</option>"
+            '<option value="' + value.value + '">' + value.label + "</option>"
           );
         });
       },
@@ -91,8 +91,8 @@ $(document).ready(function () {
     e.preventDefault();
 
     $("#imgCellType").find("img").remove();
-    $("#imgTissueType").find("img").remove();
-    $("#imgCancerType").find("img").remove();
+    $("#imgCellStatus").find("img").remove();
+    $("#imgSampleView").find("img").remove();
 
     $.ajax({
       url: "/OvarianMRD/embedding",
@@ -114,8 +114,8 @@ $(document).ready(function () {
         //             Render UMAP plots from backend (R)             //
         ///////////////////////////////////////////////////////////////
         $("#imgCellType").prepend(result.CellType);
-        $("#imgTissueType").prepend(result.TissueType);
-        $("#imgCancerType").prepend(result.CancerType);
+        $("#imgCellStatus").prepend(result.CellStatus);
+        $("#imgSampleView").prepend(result.SampleID);
       },
       complete: function () {
         $("#loader1").addClass("hidden");
