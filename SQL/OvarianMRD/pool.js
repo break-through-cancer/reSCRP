@@ -151,39 +151,32 @@ module.exports = {
         if (connection) connection.release();  // ✅ only release if it exists
         return;                                // ✅ safely exit without throwing
       }
-      var resResult = [];
 
-      // 1️⃣ Get CellTypes
-      var sqlString1 =
-        "SELECT DISTINCT CellType FROM " + req.query.dataset_id + "_meta";
+      // Single query to get both CellType and CellStatus
+      var sqlString = "SELECT CellType, CellStatus FROM " + req.query.dataset_id + "_meta";
       if (req.query.sample_id !== "") {
-        sqlString1 += ' WHERE SampleID = "' + req.query.sample_id + '"';
+        sqlString += ' WHERE SampleID = "' + req.query.sample_id + '"';
       }
 
-      connection.query(sqlString1, function (err, result1) {
-        if (err) console.log("Error fetching CellType:", err);
-        resResult.push(result1);
+      connection.query(sqlString, function (err, result) {
+        connection.release();
 
-        // 2️⃣ Get CellStatuses
-        var sqlString2 =
-          "SELECT DISTINCT CellStatus AS cellstatus FROM " + req.query.dataset_id + "_meta";
-        if (req.query.sample_id !== "") {
-          sqlString2 += ' WHERE SampleID = "' + req.query.sample_id + '"';
+        if (err) {
+          console.log("Error fetching CellType and CellStatus:", err);
+          sendResultFuc(res, [[], []]);
+          return;
         }
 
-        connection.query(sqlString2, function (err, result2) {
-          if (err) console.log("Error fetching CellStatus:", err);
+        // Extract distinct CellTypes
+        const cellTypes = [...new Set(result.map(r => r.CellType))].map(ct => ({ CellType: ct }));
 
-          // 🧩 Normalize result (case-insensitive key support)
-          const normalized = result2.map(r => {
-            const val = r.CellStatus || r.cellstatus || r["CellStatus"] || r["cellstatus"];
-            return { value: val, label: val };
-          });
+        // Extract distinct CellStatuses and normalize
+        const cellStatuses = [...new Set(result.map(r => r.CellStatus))].map(cs => ({
+          value: cs,
+          label: cs
+        }));
 
-          resResult.push(normalized);
-          connection.release();
-          sendResultFuc(res, resResult);
-        });
+        sendResultFuc(res, [cellTypes, cellStatuses]);
       });
     });
   },
